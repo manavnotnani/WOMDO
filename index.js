@@ -3,7 +3,7 @@ const YoutubeMp3Downloader = require('youtube-mp3-downloader')
 const { Deepgram } = require('@deepgram/sdk')
 const ffmpeg = require('ffmpeg-static')
 
-var getSubtitles = require('youtube-captions-scraper').getSubtitles;
+let getSubtitles = require('youtube-captions-scraper').getSubtitles;
 
 getSubtitles({
   videoID: 'KqrJCRLz80k', // youtube video id
