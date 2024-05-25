@@ -14,6 +14,7 @@
     "@anthropic-ai/sdk": "^0.21.1",
     "@deepgram/sdk": "^1.0.3",
     "@pipedream/platform": "^1.6.5",
+    "@vitalets/google-translate-api": "^9.2.0",
     "dotenv": "^16.4.5",
     "ffmpeg-static": "^4.4.0",
     "youtube-captions-scraper": "^2.0.3",

@@ -11,8 +11,8 @@ import ffmpeg from "ffmpeg-static";
 import { getSubtitles } from "youtube-captions-scraper";
 
 getSubtitles({
-  videoID: 'KqrJCRLz80k', // youtube video id
-  lang: 'en' // default: `en`
+  videoID: 'r8dSD5qNUe8', // youtube video id
+  lang: 'hi' // default: `en`
 }).then(captions => {
   let textOutput = captions.map(subtitle => subtitle.text).join('\n');
   fs.writeFile('subtitles.txt', textOutput, (err) => {
@@ -21,4 +21,4 @@ getSubtitles({
   });
 });
 
-getSubtitles("TwXgOMDONK8", "en")
+// getSubtitles("TwXgOMDONK8", "en")
