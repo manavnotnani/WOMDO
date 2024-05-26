@@ -7,6 +7,8 @@ import Link from 'next/link';
 import { ReactNode, useState } from 'react';
 import { Container } from 'react-bootstrap';
 import "./authlayout.scss";
+import { useWeb3Modal, useWeb3ModalAccount } from '@web3modal/ethers5/react';
+import { custmizeAddress } from '@/utils/common.service';
 
 type TProps = {
     children: ReactNode,
@@ -15,6 +17,8 @@ type TProps = {
 const layout = (props: TProps) => {
     const [active, setActive] = useState(false);
     const handleClick = () => document.body.clientWidth < 991 && setActive(!active);
+    const { open } = useWeb3Modal()
+    const { address, isConnected } = useWeb3ModalAccount()
     return (
         <main className='auth_layout'>
             <LazyMotion strict features={domMax}>
@@ -29,7 +33,7 @@ const layout = (props: TProps) => {
                                 >
                                     WOMDO
                                 </Link>
-                                <Button className='ms-auto connect_btn'>Connect Wallet</Button>
+                                <Button className='ms-auto connect_btn' onClick={() => open()}>{isConnected ? custmizeAddress (address as string) : 'Connect Wallet'}</Button>
                                 <button
                                     className={`header_toggle d-lg-none ${active ? "active" : ""}`}
                                     onClick={handleClick}
