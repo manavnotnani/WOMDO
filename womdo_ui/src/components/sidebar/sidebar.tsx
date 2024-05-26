@@ -3,7 +3,7 @@ import { ROUTES } from '@/utils/constants';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
-import { DashboardIcon, LockIcon, UnLockIcon } from '../../../public/icons/icons';
+import { DashboardIcon, LockIcon, SettingIcon, UnLockIcon, UsersIcon } from '../../../public/icons/icons';
 
 type TProps = {
     handleClick?: () => void,
@@ -14,13 +14,31 @@ const Sidebar = (props: TProps) => {
     const pathname = usePathname();
     const [locked, setLocked] = useState(true);
     const path = pathname.split('/');
-    const navs = [
+    const influencerNavs = [
         {
-            route: path.includes('brand') ? ROUTES.BRAND_DASHBOARD : ROUTES.INFLUENCER_DASHBOARD,
+            route: ROUTES.INFLUENCER_DASHBOARD,
             label: "Dashboard",
             icon: DashboardIcon,
         },
     ]
+    const brandNavs = [
+        {
+            route: ROUTES.BRAND_DASHBOARD,
+            label: "Dashboard",
+            icon: DashboardIcon,
+        },
+        {
+            route: ROUTES.INFLUENCERS_LISTING,
+            label: "Influencers",
+            icon: UsersIcon,
+        },
+        {
+            route: ROUTES.BRAND_PROFILE,
+            label: "Profile",
+            icon: SettingIcon,
+        },
+    ]
+    const navItems = path.includes('brand') ? brandNavs : influencerNavs;
     return (
         <>
             <div className={`header_backdrop ${props.active ? "active" : ""}`} onClick={props.handleClick}></div>
@@ -38,7 +56,7 @@ const Sidebar = (props: TProps) => {
                 </Link>
                 <ul>
                     {
-                        navs.map(item => {
+                        navItems.map(item => {
                             return (
                                 <li key={item.route}>
                                     <Link
