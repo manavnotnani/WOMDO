@@ -33,7 +33,7 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "src/styles/landingpage/trendingnfts/trendingnfts.scsss"
-  ],
+, "src/common/claude_test_node.js"  ],
   "exclude": [
     "node_modules"
   ]
