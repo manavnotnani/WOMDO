@@ -1,19 +1,26 @@
 "use client";
 import "./profile.scss";
-import { Col, Container, Row } from 'react-bootstrap'
-import Image from 'next/image';
-import Button from '@/components/button/button';
-import TG from "../../../../../public/images/tg.png";
+import { Container, Row } from 'react-bootstrap'
 import SmallTitle from "@/components/smalltitle/smalltitle";
 import BrandOnboardForm from "@/components/brandOnboardForm/brandOnboardForm";
+import ProfilePage from "@/components/brandProfile/profilePage";
 
 const Profile = () => {
+    const data = {
+        brandName: 'Your Brand Name',
+        category: 'Your Category',
+        email: 'example@example.com',
+        website: 'https://www.example.com',
+        description: 'Your brand description goes here.',
+        contactNumber: '123-456-7890',
+      };
     return (
         <section className='profile_page'>
             <Container>
                 <SmallTitle title="Profile" className="text-start" />
                 <Row>
                     <BrandOnboardForm/>
+                    <ProfilePage {...data} />
                 </Row>
             </Container>
         </section>

@@ -1,6 +1,6 @@
 @import "../../../../../public/theme/_var.scss";
 
-.dashboard_page {
+.profile_page {
 
     .row {
         margin: -2rem;
@@ -26,14 +26,14 @@
         }
     }
 
-    .dashboard_card {
+    .profile_card {
         padding: 2rem;
         height: 100%;
         backdrop-filter: blur(1rem);
         background-color: rgba($white, 0.25);
         border-radius: 2rem;
 
-        .dashboard_card_header {
+        .profile_card_header {
             display: flex;
             align-items: center;
             margin-bottom: 2rem;
@@ -42,7 +42,7 @@
                 margin-bottom: 1rem;
             }
 
-            .dashboard_card_icon {
+            .profile_card_icon {
                 width: 5.4rem;
                 flex-shrink: 0;
                 margin-right: 1rem;
