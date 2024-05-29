@@ -35,13 +35,13 @@ export async function getRating(content) {
 
 // console.log('getContext("odoo") =====>>', getContext("Odoo", 12));
 
-let content = getContext("Odoo", 12);
-console.log('=====content========', content);
-let contentForAI = createContent("Odoo", content);
-console.log('contentForAI---------', contentForAI);
+// let content = getContext("Odoo", 12);
+// console.log('=====content========', content);
+// let contentForAI = createContent("Odoo", content);
+// console.log('contentForAI---------', contentForAI);
 
 
-const finalRating = await getRating(contentForAI);
+// const finalRating = await getRating(contentForAI);
 
-console.log('finalRating---------', finalRating);
+// console.log('finalRating---------', finalRating);
 

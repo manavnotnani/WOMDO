@@ -2,6 +2,7 @@
   "name": "womdo",
   "version": "0.1.1",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -10,17 +11,20 @@
   },
   "dependencies": {
     "@studio-freight/lenis": "^1.0.42",
+    "@vitalets/google-translate-api": "^9.2.0",
     "@web3modal/ethers5": "^4.2.2",
     "bootstrap": "^5.3.3",
     "dotenv": "^16.4.5",
     "ethers": "^5.7.2",
     "formik": "^2.4.6",
     "framer-motion": "^11.0.22",
+    "fs": "^0.0.1-security",
     "mongoose": "^8.4.0",
     "next": "14.1.4",
     "react": "^18",
     "react-bootstrap": "^2.10.2",
     "react-dom": "^18",
+    "youtube-captions-scraper": "^2.0.3",
     "yup": "^1.4.0"
   },
   "devDependencies": {

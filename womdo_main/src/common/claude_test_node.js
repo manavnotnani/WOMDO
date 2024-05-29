@@ -1,7 +1,5 @@
 import Anthropic from "@anthropic-ai/sdk";
 import * as dotenv from "dotenv";
-import { createContent } from "./createContentForAI.js";
-import { getContext } from "./extractBrand.js";
 import path from "path";
 import { fileURLToPath } from 'url';
 
@@ -9,7 +7,7 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-dotenv.config({ path: path.resolve(__dirname, '..', '.env') });
+dotenv.config({ path: path.resolve(__dirname, '..', '..', '.env') });
 
 const anthropic = new Anthropic({
   apiKey:
@@ -35,13 +33,31 @@ export async function getRating(content) {
 
 // console.log('getContext("odoo") =====>>', getContext("Odoo", 12));
 
-let content = getContext("Odoo", 12);
-console.log('=====content========', content);
-let contentForAI = createContent("Odoo", content);
-console.log('contentForAI---------', contentForAI);
+// let content = getContext("Odoo", 12);
+// console.log('=====content========', content);
+// let contentForAI = createContent("Odoo", content);
+// console.log('contentForAI---------', contentForAI);
 
+// let contentForAI = `context can you tell on the scale of 10 how the person in this text is rating product named Z9,Iqoo: 
+// House Vishal Finally Missed Us Remember Us
+// she used to come to me every day
+// We have the link of Zoom every day.
+// Someone else is left lying there in the chat
+// Doesn't click, miss it a lot, just guys
+// Today is a very special episode it is the
+// Last Episode in Ike Mummy Night Season Two This
+// Whole season you have tagged us in memes and you
+// The Guy Who Did That Stand Chance to Win a
+// Brand new aak smartphone today is the
+// Episode and We Will Declare the Results of
+// Aak Mam Nai Season 2 and Today's Episode is
+// Brought to you by the brand new AK Z9 one it
+// Is the fastest phone in its segment with
+// 6000 mahapwd.com
+// sir
+// C is the website`
+// const finalRating = await getRating(contentForAI);
 
-const finalRating = await getRating(contentForAI);
+// console.log('finalRating---------', finalRating);
 
-console.log('finalRating---------', finalRating);
 
