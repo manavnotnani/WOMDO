@@ -5,6 +5,7 @@ import { saveSubtitles } from "@/common/getSubtitles";
 import { translateFileToEnglish } from "@/common/translate";
 import { getContext, getContextAndCreateContent } from "@/common/extractBrand";
 import { getRating } from "@/common/claude_test_node";
+import BrandInfluencer from "@/database/models/brandInfluencerData";
 
 function delay(ms: any) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -34,11 +35,11 @@ export async function POST(req: NextRequest) {
       reqObj.brand
     );
 
-    console.log('context', context);
+    console.log("context", context);
 
     const rating: any = await getRating(context);
 
-    console.log('rating', rating);
+    console.log("rating", rating);
 
     let match = rating[0].text.match(/Rating: (\d+)/);
 
@@ -50,11 +51,20 @@ export async function POST(req: NextRequest) {
       ratingNumber = 7;
     }
 
+    const updateEntry = await BrandInfluencer.updateOne({influencerAddress: reqObj.wallet, addId: reqObj.addId}, {rating: ratingNumber })
+
+    console.log('updateEntry', updateEntry);
+    // const newObject = new BrandInfluencer({videoId: reqObj.videoId,rating: ratingNumber })
+
     // const newPrompt = new Brand(reqObj);
     // console.log('newPrompt', newPrompt);
     // await newPrompt.save();
     return NextResponse.json(
-      { status: true, message: "WOMDO: Video Analysed Successfully", data: {Rating: ratingNumber} },
+      {
+        status: true,
+        message: "WOMDO: Video Analysed Successfully",
+        data: { Rating: ratingNumber },
+      },
       { status: 201 }
     );
   } catch (error: any) {
