@@ -20,7 +20,8 @@ const BrandSchema = new Schema({
     type: String
   },
   brandAddress: {
-    type: String
+    type: String,
+    unique: true
   }
 
 });

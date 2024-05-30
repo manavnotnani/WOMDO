@@ -21,10 +21,14 @@ const InfluencerSchema = new Schema({
   },
   wallet: {
     type: String,
+    unique: true,
   },
   channelLink: {
-    type: String
-  }
+    type: String,
+  },
+  email: {
+    type: String,
+  },
 });
 
 const Influencer = models.Certificate || model("Influencer", InfluencerSchema);
