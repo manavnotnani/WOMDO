@@ -7,20 +7,6 @@ export async function POST(req: NextRequest) {
         await connectToDb()
         const reqObj = await req.json();
         console.log('reqObj', reqObj);
-
-
-
-
-        // const _certificate = await Influencer.findOne({ recipientEmail: validation.data.recipientEmail.toLowerCase() });
-        // if (_certificate) return NextResponse.json({ status: true, message: "Certificate Already Exits with this email address", data: _certificate }, { status: 200 });
-
-
-        // const generatedCertificateNumber = randomUUID();
-        // const certificateNumber = String(generatedCertificateNumber).toLowerCase();
-
-        // console.log({ certificateNumber });
-
-
         const newPrompt = new Influencer(reqObj);
         console.log('newPrompt', newPrompt);
         await newPrompt.save();

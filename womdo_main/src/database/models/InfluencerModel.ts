@@ -10,13 +10,16 @@ const InfluencerSchema = new Schema({
   totalViewCount: {
     type: Number,
   },
-  followerCount: {
+  subscribers: {
     type: Number,
   },
   overallWatchtime: {
     type: Number,
   },
   niche: {
+    type: String,
+  },
+  wallet: {
     type: String,
   },
 });
