@@ -4,7 +4,7 @@ const BrandSchema = new Schema({
   name: {
     type: String,
   },
-  niche: {
+  category: {
     type: String,
   },
   budget: {

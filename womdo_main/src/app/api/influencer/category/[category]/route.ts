@@ -5,14 +5,14 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(req: NextRequest, { params }: { params: any }) {
   try {
     await connectToDb();
-    console.log("params", params.niche);
+    console.log("params", params.category);
 
     // Construct the regular expression for case-insensitive exact match
-    const nicheRegex = new RegExp(`^${params.niche}$`, "i");
-    console.log("nicheRegex", nicheRegex);
+    const categoryRegex = new RegExp(`^${params.category}$`, "i");
+    console.log("categoryRegex", categoryRegex);
 
     const influencerDetails = await Influencer.find({
-      niche: { $regex: nicheRegex },
+      category: { $regex: categoryRegex },
     });
 
     console.log("influencerDetails", influencerDetails);

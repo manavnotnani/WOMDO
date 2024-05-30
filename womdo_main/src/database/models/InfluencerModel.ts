@@ -4,7 +4,7 @@ const InfluencerSchema = new Schema({
   name: {
     type: String,
   },
-  youtubeProfile: {
+  channelName: {
     type: String,
   },
   totalViewCount: {
@@ -16,12 +16,15 @@ const InfluencerSchema = new Schema({
   overallWatchtime: {
     type: Number,
   },
-  niche: {
+  category: {
     type: String,
   },
   wallet: {
     type: String,
   },
+  channelLink: {
+    type: String
+  }
 });
 
 const Influencer = models.Certificate || model("Influencer", InfluencerSchema);
