@@ -5,18 +5,24 @@ import * as Yup from "yup";
 import { Form, Container, Row, Col } from "react-bootstrap";
 import "./influencerOnboardForm.scss";
 import Button from "../button/button";
+import { API_ROUTES, API_URL } from "@/utils/constants";
+import { useWeb3ModalAccount } from "@web3modal/ethers5/react";
+import toast from "react-hot-toast";
 
 interface FormValues {
+  name: string;
   channelName: string;
   category: string;
   email: string;
   channelLink: string;
   subscribers: string;
-  description: string;
-  contactNumber: string;
+  totalViewCount: string;
+  overallWatchtime: string;
 }
 
 const InfluencerOnboardForm: React.FC = () => {
+  const { address, isConnected } = useWeb3ModalAccount();
+
   const categories = [
     "Music",
     "Lifestyle",
@@ -32,15 +38,17 @@ const InfluencerOnboardForm: React.FC = () => {
   ];
   const formik = useFormik<FormValues>({
     initialValues: {
+      name: "",
       channelName: "",
       category: "",
       email: "",
       channelLink: "",
       subscribers: "",
-      description: "",
-      contactNumber: "",
+      totalViewCount: "",
+      overallWatchtime: "",
     },
     validationSchema: Yup.object({
+      name: Yup.string().required("Name is required"),
       channelName: Yup.string().required("Channel Name is required"),
       category: Yup.string().required("Category is required"),
       email: Yup.string()
@@ -50,12 +58,38 @@ const InfluencerOnboardForm: React.FC = () => {
         .url("Invalid URL")
         .required("Channel link is required"),
       subscribers: Yup.string().required("Subscribers is required"),
-      description: Yup.string().required("Description is required"),
-      contactNumber: Yup.string()
-        .matches(/^[0-9]+$/, "Contact Number must be numeric")
-        .required("Contact Number is required"),
+      totalViewCount: Yup.string().required("Total view count is required"),
+      overallWatchtime: Yup.string().required("Overall watch time is required"),
     }),
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
+      if (!isConnected) {
+        toast.error("Please connect wallet!");
+        return;
+      }
+      let headersList = {
+        "Content-Type": "application/json",
+      };
+      let bodyContent = JSON.stringify({
+        name: values.name,
+        channelName: values.channelName,
+        totalViewCount: values.totalViewCount,
+        subscribers: values.subscribers,
+        overallWatchtime: values.overallWatchtime,
+        category: values.category,
+        wallet: address,
+        channelLink: values.channelLink,
+        email: values.email
+      });
+
+      let response = await fetch(API_URL + API_ROUTES.GET_INFLUENCER, {
+        method: "POST",
+        body: bodyContent,
+        headers: headersList,
+      });
+
+      let data = await response.text();
+      console.log(data);
+
       // Handle form submission
       console.log("Form data:", values);
     },
@@ -67,6 +101,18 @@ const InfluencerOnboardForm: React.FC = () => {
         <Col md="6">
           <div className="form-container">
             <Form onSubmit={formik.handleSubmit}>
+              <Form.Group controlId="name" className="form-group">
+                <Form.Label>Name</Form.Label>
+                <Form.Control
+                  type="text"
+                  {...formik.getFieldProps("name")}
+                  isInvalid={!!formik.errors.name && formik.touched.name}
+                />
+                <Form.Control.Feedback type="invalid">
+                  {formik.errors.name}
+                </Form.Control.Feedback>
+              </Form.Group>
+
               <Form.Group controlId="channelName" className="form-group">
                 <Form.Label>Channel Name</Form.Label>
                 <Form.Control
@@ -127,7 +173,7 @@ const InfluencerOnboardForm: React.FC = () => {
                   {formik.errors.channelLink}
                 </Form.Control.Feedback>
               </Form.Group>
-              
+
               <Form.Group controlId="subscribers" className="form-group">
                 <Form.Label>Subscribers</Form.Label>
                 <Form.Control
@@ -142,33 +188,33 @@ const InfluencerOnboardForm: React.FC = () => {
                 </Form.Control.Feedback>
               </Form.Group>
 
-              <Form.Group controlId="description" className="form-group">
-                <Form.Label>Description</Form.Label>
+              <Form.Group controlId="totalViewCount" className="form-group">
+                <Form.Label>Total View Count</Form.Label>
                 <Form.Control
-                  as="textarea"
-                  rows={3}
-                  {...formik.getFieldProps("description")}
+                  type="text"
+                  {...formik.getFieldProps("totalViewCount")}
                   isInvalid={
-                    !!formik.errors.description && formik.touched.description
+                    !!formik.errors.totalViewCount &&
+                    formik.touched.totalViewCount
                   }
                 />
                 <Form.Control.Feedback type="invalid">
-                  {formik.errors.description}
+                  {formik.errors.subscribers}
                 </Form.Control.Feedback>
               </Form.Group>
 
-              <Form.Group controlId="contactNumber" className="form-group">
-                <Form.Label>Contact Number</Form.Label>
+              <Form.Group controlId="overallWatchtime" className="form-group">
+                <Form.Label>Overall Watch Time</Form.Label>
                 <Form.Control
                   type="text"
-                  {...formik.getFieldProps("contactNumber")}
+                  {...formik.getFieldProps("overallWatchtime")}
                   isInvalid={
-                    !!formik.errors.contactNumber &&
-                    formik.touched.contactNumber
+                    !!formik.errors.overallWatchtime &&
+                    formik.touched.overallWatchtime
                   }
                 />
                 <Form.Control.Feedback type="invalid">
-                  {formik.errors.contactNumber}
+                  {formik.errors.overallWatchtime}
                 </Form.Control.Feedback>
               </Form.Group>
 

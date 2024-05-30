@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Head from "next/head";
 import "./index.scss";
 import { Web3Modal } from "@/context/web3modal";
+import { Toaster } from "react-hot-toast";
 
 export const metadata: Metadata = {
   title: "WOMDO",
@@ -34,6 +35,7 @@ export default function RootLayout({
       </Head>
       <body>
         <Web3Modal>
+          <Toaster position="top-center" />
           {/* <Loader /> */}
           {children}
         </Web3Modal>
