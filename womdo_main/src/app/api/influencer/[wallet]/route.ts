@@ -5,14 +5,14 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(req: NextRequest, { params }: { params: any }) {
   try {
     await connectToDb();
-    console.log("params", params.wallet);
+    console.log("params", params.walletAddress);
 
     // Construct the regular expression for case-insensitive exact match
-    const walletAddressRegex = new RegExp(`^${params.wallet}$`, "i");
+    const walletAddressRegex = new RegExp(`^${params.walletAddress}$`, "i");
     console.log("walletAddressRegex", walletAddressRegex);
 
     const influencerDetails = await Influencer.findOne({
-      wallet: { $regex: walletAddressRegex },
+      walletAddress: { $regex: walletAddressRegex },
     });
 
     console.log("influencerDetails", influencerDetails);
