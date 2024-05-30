@@ -11,7 +11,7 @@ const Banner = () => {
             <Container>
                 <h1>WOMDO</h1>
                 <h3>Are You?</h3>
-                <Button onClick={() => router.push(ROUTES.INFLUENCER_DASHBOARD)} className="selection_btn">
+                <Button onClick={() => router.push(ROUTES.INFLUENCER_PROFILE)} className="selection_btn">
                     Influencer
                 </Button>
                 <Button onClick={() => router.push(ROUTES.BRAND_DASHBOARD)} className="selection_btn">

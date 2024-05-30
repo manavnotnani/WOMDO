@@ -4,11 +4,12 @@ import Sidebar from '@/components/sidebar/sidebar';
 import { ROUTES } from '@/utils/constants';
 import { LazyMotion, domMax } from 'framer-motion';
 import Link from 'next/link';
-import { ReactNode, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { Container } from 'react-bootstrap';
 import "./authlayout.scss";
 import { useWeb3Modal, useWeb3ModalAccount } from '@web3modal/ethers5/react';
 import { custmizeAddress } from '@/utils/common.service';
+import Loader from '@/components/loader/loader';
 
 type TProps = {
     children: ReactNode,
@@ -16,9 +17,13 @@ type TProps = {
 
 const layout = (props: TProps) => {
     const [active, setActive] = useState(false);
+    const [loader, setLoader] = useState(true);
     const handleClick = () => document.body.clientWidth < 991 && setActive(!active);
     const { open } = useWeb3Modal()
-    const { address, isConnected } = useWeb3ModalAccount()
+    const { address, isConnected} = useWeb3ModalAccount()
+    useEffect(() => {
+        setLoader(false) 
+    }, [isConnected])
     return (
         <main className='auth_layout'>
             <LazyMotion strict features={domMax}>
@@ -45,7 +50,7 @@ const layout = (props: TProps) => {
                             </div>
                         </Container>
                     </header>
-                    {props.children}
+                    {loader ? <Loader/> : props.children}
                 </div>
             </LazyMotion>
         </main>

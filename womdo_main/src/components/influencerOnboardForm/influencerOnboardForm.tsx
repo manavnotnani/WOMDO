@@ -3,19 +3,20 @@ import React from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Form, Container, Row, Col } from "react-bootstrap";
-import "./brandOnboardForm.scss";
+import "./influencerOnboardForm.scss";
 import Button from "../button/button";
 
 interface FormValues {
-  brandName: string;
+  channelName: string;
   category: string;
   email: string;
-  website: string;
+  channelLink: string;
+  subscribers: string;
   description: string;
   contactNumber: string;
 }
 
-const BrandOnboardForm: React.FC = () => {
+const InfluencerOnboardForm: React.FC = () => {
   const categories = [
     "Music",
     "Lifestyle",
@@ -31,20 +32,24 @@ const BrandOnboardForm: React.FC = () => {
   ];
   const formik = useFormik<FormValues>({
     initialValues: {
-      brandName: "",
+      channelName: "",
       category: "",
       email: "",
-      website: "",
+      channelLink: "",
+      subscribers: "",
       description: "",
       contactNumber: "",
     },
     validationSchema: Yup.object({
-      brandName: Yup.string().required("Brand Name is required"),
+      channelName: Yup.string().required("Channel Name is required"),
       category: Yup.string().required("Category is required"),
       email: Yup.string()
         .email("Invalid email address")
         .required("Email is required"),
-      website: Yup.string().url("Invalid URL").required("Website is required"),
+      channelLink: Yup.string()
+        .url("Invalid URL")
+        .required("Channel link is required"),
+      subscribers: Yup.string().required("Subscribers is required"),
       description: Yup.string().required("Description is required"),
       contactNumber: Yup.string()
         .matches(/^[0-9]+$/, "Contact Number must be numeric")
@@ -62,17 +67,17 @@ const BrandOnboardForm: React.FC = () => {
         <Col md="6">
           <div className="form-container">
             <Form onSubmit={formik.handleSubmit}>
-              <Form.Group controlId="brandName" className="form-group">
-                <Form.Label>Brand Name</Form.Label>
+              <Form.Group controlId="channelName" className="form-group">
+                <Form.Label>Channel Name</Form.Label>
                 <Form.Control
                   type="text"
-                  {...formik.getFieldProps("brandName")}
+                  {...formik.getFieldProps("channelName")}
                   isInvalid={
-                    !!formik.errors.brandName && formik.touched.brandName
+                    !!formik.errors.channelName && formik.touched.channelName
                   }
                 />
                 <Form.Control.Feedback type="invalid">
-                  {formik.errors.brandName}
+                  {formik.errors.channelName}
                 </Form.Control.Feedback>
               </Form.Group>
 
@@ -109,15 +114,31 @@ const BrandOnboardForm: React.FC = () => {
                 </Form.Control.Feedback>
               </Form.Group>
 
-              <Form.Group controlId="website" className="form-group">
-                <Form.Label>Website</Form.Label>
+              <Form.Group controlId="channelLink" className="form-group">
+                <Form.Label>Channel Link</Form.Label>
                 <Form.Control
                   type="url"
-                  {...formik.getFieldProps("website")}
-                  isInvalid={!!formik.errors.website && formik.touched.website}
+                  {...formik.getFieldProps("channelLink")}
+                  isInvalid={
+                    !!formik.errors.channelLink && formik.touched.channelLink
+                  }
                 />
                 <Form.Control.Feedback type="invalid">
-                  {formik.errors.website}
+                  {formik.errors.channelLink}
+                </Form.Control.Feedback>
+              </Form.Group>
+              
+              <Form.Group controlId="subscribers" className="form-group">
+                <Form.Label>Subscribers</Form.Label>
+                <Form.Control
+                  type="text"
+                  {...formik.getFieldProps("subscribers")}
+                  isInvalid={
+                    !!formik.errors.subscribers && formik.touched.subscribers
+                  }
+                />
+                <Form.Control.Feedback type="invalid">
+                  {formik.errors.subscribers}
                 </Form.Control.Feedback>
               </Form.Group>
 
@@ -164,4 +185,4 @@ const BrandOnboardForm: React.FC = () => {
   );
 };
 
-export default BrandOnboardForm;
+export default InfluencerOnboardForm;

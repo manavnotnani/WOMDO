@@ -16,9 +16,14 @@ const Sidebar = (props: TProps) => {
     const path = pathname.split('/');
     const influencerNavs = [
         {
-            route: ROUTES.INFLUENCER_DASHBOARD,
-            label: "Dashboard",
-            icon: DashboardIcon,
+            route: ROUTES.INFLUENCER_PROFILE,
+            label: "Profile",
+            icon: SettingIcon,
+        },
+        {
+            route: ROUTES.INFLUENCER_INVITATIONS,
+            label: "Invitations",
+            icon: SettingIcon,
         },
     ]
     const brandNavs = [
