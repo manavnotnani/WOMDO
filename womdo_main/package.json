@@ -10,6 +10,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.21.1",
     "@studio-freight/lenis": "^1.0.42",
     "@vitalets/google-translate-api": "^9.2.0",
     "@web3modal/ethers5": "^4.2.2",
