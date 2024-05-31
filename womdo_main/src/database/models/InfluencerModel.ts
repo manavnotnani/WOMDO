@@ -31,6 +31,6 @@ const InfluencerSchema = new Schema({
   },
 });
 
-const Influencer = models.Certificate || model("Influencer", InfluencerSchema);
+const Influencer = model("Influencer", InfluencerSchema);
 
 export default Influencer;
