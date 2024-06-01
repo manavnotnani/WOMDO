@@ -28,19 +28,14 @@ const Sidebar = (props: TProps) => {
     ]
     const brandNavs = [
         {
-            route: ROUTES.BRAND_DASHBOARD,
-            label: "Dashboard",
-            icon: DashboardIcon,
+            route: ROUTES.BRAND_PROFILE,
+            label: "Profile",
+            icon: SettingIcon,
         },
         {
             route: ROUTES.INFLUENCERS_LISTING,
             label: "Influencers",
             icon: UsersIcon,
-        },
-        {
-            route: ROUTES.BRAND_PROFILE,
-            label: "Profile",
-            icon: SettingIcon,
         },
     ]
     const navItems = path.includes('brand') ? brandNavs : influencerNavs;
