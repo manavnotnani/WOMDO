@@ -13,7 +13,6 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ status: true, message: "Request Sent to Influencer Successfully", data: newPrompt }, { status: 201 })
     } catch (error: any) {
         console.log(error);
-
         return NextResponse.json({ status: false, message: error.message }, { status: 500 })
     }
 }
