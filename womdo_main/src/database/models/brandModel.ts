@@ -26,6 +26,6 @@ const BrandSchema = new Schema({
 
 });
 
-const Brand = models.Certificate || model("Brand", BrandSchema);
+const Brand = models.Brand || model("Brand", BrandSchema);
 
 export default Brand;

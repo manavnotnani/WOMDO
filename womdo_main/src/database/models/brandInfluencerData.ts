@@ -33,6 +33,6 @@ const BrandInfluencerSchema = new Schema({
 });
 
 const BrandInfluencer =
-  models.Certificate || model("BrandInfluencer", BrandInfluencerSchema);
+  models.BrandInfluencer || model("BrandInfluencer", BrandInfluencerSchema);
 
 export default BrandInfluencer;
