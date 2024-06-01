@@ -14,7 +14,7 @@ const BrandCollabSchema = new Schema({
   },
   requestSentStatus: {
     type: Boolean,
-    default: false
+    default: true
   },
   acceptedStatus: {
     type: Boolean,
