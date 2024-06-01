@@ -1,5 +1,5 @@
 import { connectToDb } from "@/database/connect";
-import BrandInfluencer from "@/database/models/brandInfluencerData";
+import BrandInfluencer from "@/database/models/brandCollabModel";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest, { params }: { params: any }) {

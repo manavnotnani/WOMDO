@@ -11,9 +11,15 @@ export async function GET(req: NextRequest, { params }: { params: any }) {
     const categoryRegex = new RegExp(`^${params.category}$`, "i");
     console.log("categoryRegex", categoryRegex);
 
-    const influencerDetails = await Influencer.find({
-      category: { $regex: categoryRegex },
-    });
+    let influencerDetails;
+    if (params.category == "all") {
+      influencerDetails = await Influencer.find();
+    } else {
+      influencerDetails = await Influencer.find({
+        category: { $regex: categoryRegex },
+      });
+    }
+ 
 
     console.log("influencerDetails", influencerDetails);
 
@@ -28,7 +34,7 @@ export async function GET(req: NextRequest, { params }: { params: any }) {
       );
     } else {
       return NextResponse.json(
-        { status: true, message: "Influencer Details Not Found", data: {} },
+        { status: false, message: "Influencer Details Not Found", data: {} },
         { status: 404 }
       );
     }
