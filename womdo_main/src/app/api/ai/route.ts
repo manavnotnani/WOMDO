@@ -5,7 +5,7 @@ import { saveSubtitles } from "@/common/getSubtitles";
 import { translateFileToEnglish } from "@/common/translate";
 import { getContext, getContextAndCreateContent } from "@/common/extractBrand";
 import { getRating } from "@/common/claude_test_node";
-import BrandInfluencer from "@/database/models/brandInfluencerData";
+import BrandInfluencer from "@/database/models/brandCollabModel";
 
 function delay(ms: any) {
   return new Promise((resolve) => setTimeout(resolve, ms));

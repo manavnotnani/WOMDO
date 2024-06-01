@@ -1,26 +1,17 @@
 import { Schema, model, models } from "mongoose";
 
 const BrandSchema = new Schema({
-  name: {
+  brandName: {
     type: String,
+    unique: true
   },
   category: {
     type: String,
   },
-  budget: {
-    type: Number,
-  },
-  numberOfTargetedAds: {
-    type: Number,
-  },
-  addId : {
-    type: String
-  },
   brandAddress: {
     type: String,
-    unique: true
-  }
-
+    unique: true,
+  },
 });
 
 const Brand = models.Brand || model("Brand", BrandSchema);

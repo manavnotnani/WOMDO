@@ -1,11 +1,11 @@
 import { Schema, model, models } from "mongoose";
 
-const BrandInfluencerSchema = new Schema({
-  addId: {
+const BrandCollabSchema = new Schema({
+  adId: {
     type: String,
     required: true, // Ensure this field is required if it should always have a value
   },
-  influencer: {
+  influencerName: {
     type: String,
   },
   influencerAddress: {
@@ -23,21 +23,24 @@ const BrandInfluencerSchema = new Schema({
   rating: {
     type: Number,
   },
-  subscribers: {
-    type: Number
-  },
   videoId: {
     type: String
   },
-  brand: {
+  brandName: {
+    type: String
+  }, 
+  productName: {
+    type: String
+  }, 
+  brandAddress: {
     type: String
   }
 });
 
 // Create a unique compound index on addId and influencerAddress
-BrandInfluencerSchema.index({ addId: 1, influencerAddress: 1 }, { unique: true });
+BrandCollabSchema.index({ addId: 1, influencerAddress: 1 }, { unique: true });
 
-const BrandInfluencer =
-  models.BrandInfluencer || model("BrandInfluencer", BrandInfluencerSchema);
+const BrandCollab =
+  models.BrandInfluencer || model("BrandCollab", BrandCollabSchema);
 
-export default BrandInfluencer;
+export default BrandCollab;
