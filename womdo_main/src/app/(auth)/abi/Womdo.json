@@ -84,13 +84,19 @@
             {
                 "indexed": false,
                 "internalType": "address",
-                "name": "brand",
+                "name": "brandAddress",
                 "type": "address"
             },
             {
                 "indexed": false,
                 "internalType": "string",
-                "name": "name",
+                "name": "brandName",
+                "type": "string"
+            },
+            {
+                "indexed": false,
+                "internalType": "string",
+                "name": "productName",
                 "type": "string"
             },
             {
@@ -315,25 +321,6 @@
     {
         "inputs": [
             {
-                "internalType": "uint256",
-                "name": "_id",
-                "type": "uint256"
-            }
-        ],
-        "name": "getArray",
-        "outputs": [
-            {
-                "internalType": "uint256[]",
-                "name": "",
-                "type": "uint256[]"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
                 "internalType": "bytes32",
                 "name": "requestId",
                 "type": "bytes32"
@@ -429,7 +416,12 @@
             },
             {
                 "internalType": "string",
-                "name": "_name",
+                "name": "_brandName",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "_productName",
                 "type": "string"
             },
             {

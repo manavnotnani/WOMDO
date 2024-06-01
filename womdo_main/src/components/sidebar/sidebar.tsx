@@ -3,7 +3,7 @@ import { ROUTES } from '@/utils/constants';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
-import { DashboardIcon, LockIcon, SettingIcon, UnLockIcon, UsersIcon } from '../../../public/icons/icons';
+import { DashboardIcon, LockIcon, NftsIcon, SettingIcon, UnLockIcon, UsersIcon } from '../../../public/icons/icons';
 
 type TProps = {
     handleClick?: () => void,
@@ -31,6 +31,11 @@ const Sidebar = (props: TProps) => {
             route: ROUTES.BRAND_PROFILE,
             label: "Profile",
             icon: SettingIcon,
+        },
+        {
+            route: ROUTES.BRAND_Ads,
+            label: "My ADs",
+            icon: NftsIcon,
         },
         {
             route: ROUTES.INFLUENCERS_LISTING,
