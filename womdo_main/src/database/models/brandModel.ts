@@ -13,9 +13,6 @@ const BrandSchema = new Schema({
   numberOfTargetedAds: {
     type: Number,
   },
-  brandId:{
-    type: String,
-  },
   addId : {
     type: String
   },
