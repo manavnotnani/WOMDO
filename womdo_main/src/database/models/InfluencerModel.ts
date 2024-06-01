@@ -31,6 +31,7 @@ const InfluencerSchema = new Schema({
   },
 });
 
-const Influencer = /* models.Certificate || */ model("Influencer", InfluencerSchema);
+// Check if the model already exists before defining it
+const Influencer = models.Influencer || model("Influencer", InfluencerSchema);
 
 export default Influencer;

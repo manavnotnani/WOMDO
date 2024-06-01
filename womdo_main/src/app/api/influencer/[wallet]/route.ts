@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest, { params }: { params: any }) {
   try {
+    console.log('params', params)
     await connectToDb();
     console.log("params", params.wallet);
 

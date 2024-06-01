@@ -20,7 +20,12 @@ interface FormValues {
   overallWatchtime: string;
 }
 
-const InfluencerOnboardForm: React.FC = () => {
+interface InfluencerOnboardFormProps {
+  handleRefresh: () => void;
+}
+
+
+const InfluencerOnboardForm: React.FC<InfluencerOnboardFormProps> = ({ handleRefresh }) => {
   const { address, isConnected } = useWeb3ModalAccount();
 
   const categories = [
@@ -81,17 +86,19 @@ const InfluencerOnboardForm: React.FC = () => {
         email: values.email
       });
 
-      let response = await fetch(API_URL + API_ROUTES.GET_INFLUENCER, {
+      let response : any= await fetch(API_URL + API_ROUTES.GET_INFLUENCER, {
         method: "POST",
         body: bodyContent,
         headers: headersList,
       });
-
-      let data = await response.text();
-      console.log(data);
-
-      // Handle form submission
-      console.log("Form data:", values);
+      const data = await response.json()
+      console.log('data', data)
+      if(data.status){
+        toast.success(data.message);
+        handleRefresh();
+      } else {
+        toast.error(data.message);
+      }
     },
   });
 
