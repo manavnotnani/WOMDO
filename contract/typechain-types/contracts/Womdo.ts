@@ -32,20 +32,18 @@ export interface WomdoInterface extends utils.Interface {
     "USDT()": FunctionFragment;
     "acceptAd(uint256)": FunctionFragment;
     "acceptOwnership()": FunctionFragment;
+    "acceptedUserAddress(address,uint256,uint256)": FunctionFragment;
     "adOwner(uint256)": FunctionFragment;
-    "bytesToArray(bytes)": FunctionFragment;
     "claim(uint256)": FunctionFragment;
-    "decodeUint(bytes)": FunctionFragment;
     "donId()": FunctionFragment;
-    "getArray(uint256)": FunctionFragment;
+    "fulfillRequestLocal(bytes)": FunctionFragment;
     "handleOracleFulfillment(bytes32,bytes,bytes)": FunctionFragment;
     "influencerShare(uint256,uint256)": FunctionFragment;
     "isInfluencerAccepted(address,uint256)": FunctionFragment;
     "owner()": FunctionFragment;
-    "registerAd(uint256,uint256)": FunctionFragment;
-    "s_lastError()": FunctionFragment;
+    "registerAd(uint256,uint256,string,string,string)": FunctionFragment;
+    "returnedArray(uint256)": FunctionFragment;
     "s_lastRequestId()": FunctionFragment;
-    "s_lastResponse()": FunctionFragment;
     "sendRequest(string,uint8,bytes,string[],bytes[],uint64,uint32)": FunctionFragment;
     "setDonId(bytes32)": FunctionFragment;
     "totalAds()": FunctionFragment;
@@ -58,20 +56,18 @@ export interface WomdoInterface extends utils.Interface {
       | "USDT"
       | "acceptAd"
       | "acceptOwnership"
+      | "acceptedUserAddress"
       | "adOwner"
-      | "bytesToArray"
       | "claim"
-      | "decodeUint"
       | "donId"
-      | "getArray"
+      | "fulfillRequestLocal"
       | "handleOracleFulfillment"
       | "influencerShare"
       | "isInfluencerAccepted"
       | "owner"
       | "registerAd"
-      | "s_lastError"
+      | "returnedArray"
       | "s_lastRequestId"
-      | "s_lastResponse"
       | "sendRequest"
       | "setDonId"
       | "totalAds"
@@ -89,25 +85,25 @@ export interface WomdoInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "adOwner",
-    values: [PromiseOrValue<BigNumberish>]
+    functionFragment: "acceptedUserAddress",
+    values: [
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>
+    ]
   ): string;
   encodeFunctionData(
-    functionFragment: "bytesToArray",
-    values: [PromiseOrValue<BytesLike>]
+    functionFragment: "adOwner",
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "claim",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
-  encodeFunctionData(
-    functionFragment: "decodeUint",
-    values: [PromiseOrValue<BytesLike>]
-  ): string;
   encodeFunctionData(functionFragment: "donId", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "getArray",
-    values: [PromiseOrValue<BigNumberish>]
+    functionFragment: "fulfillRequestLocal",
+    values: [PromiseOrValue<BytesLike>]
   ): string;
   encodeFunctionData(
     functionFragment: "handleOracleFulfillment",
@@ -128,18 +124,20 @@ export interface WomdoInterface extends utils.Interface {
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "registerAd",
-    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
+    values: [
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<string>,
+      PromiseOrValue<string>,
+      PromiseOrValue<string>
+    ]
   ): string;
   encodeFunctionData(
-    functionFragment: "s_lastError",
-    values?: undefined
+    functionFragment: "returnedArray",
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "s_lastRequestId",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "s_lastResponse",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -174,15 +172,17 @@ export interface WomdoInterface extends utils.Interface {
     functionFragment: "acceptOwnership",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "adOwner", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "bytesToArray",
+    functionFragment: "acceptedUserAddress",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "adOwner", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "claim", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "decodeUint", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "donId", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "getArray", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "fulfillRequestLocal",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "handleOracleFulfillment",
     data: BytesLike
@@ -198,15 +198,11 @@ export interface WomdoInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "registerAd", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "s_lastError",
+    functionFragment: "returnedArray",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
     functionFragment: "s_lastRequestId",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "s_lastResponse",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -223,7 +219,8 @@ export interface WomdoInterface extends utils.Interface {
 
   events: {
     "AdAccepted(uint256,address,address[])": EventFragment;
-    "AdRegistered(uint256,uint256,uint256,address)": EventFragment;
+    "AdRegistered(uint256,uint256,uint256,address,string,string,string)": EventFragment;
+    "Claimed(uint256,address,uint256)": EventFragment;
     "OwnershipTransferRequested(address,address)": EventFragment;
     "OwnershipTransferred(address,address)": EventFragment;
     "RequestFulfilled(bytes32)": EventFragment;
@@ -232,6 +229,7 @@ export interface WomdoInterface extends utils.Interface {
 
   getEvent(nameOrSignatureOrTopic: "AdAccepted"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "AdRegistered"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "Claimed"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OwnershipTransferRequested"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "RequestFulfilled"): EventFragment;
@@ -254,14 +252,29 @@ export interface AdRegisteredEventObject {
   adId: BigNumber;
   totalUsers: BigNumber;
   usdtAmount: BigNumber;
-  brand: string;
+  brandAddress: string;
+  brandName: string;
+  productName: string;
+  category: string;
 }
 export type AdRegisteredEvent = TypedEvent<
-  [BigNumber, BigNumber, BigNumber, string],
+  [BigNumber, BigNumber, BigNumber, string, string, string, string],
   AdRegisteredEventObject
 >;
 
 export type AdRegisteredEventFilter = TypedEventFilter<AdRegisteredEvent>;
+
+export interface ClaimedEventObject {
+  adId: BigNumber;
+  influencer: string;
+  share: BigNumber;
+}
+export type ClaimedEvent = TypedEvent<
+  [BigNumber, string, BigNumber],
+  ClaimedEventObject
+>;
+
+export type ClaimedEventFilter = TypedEventFilter<ClaimedEvent>;
 
 export interface OwnershipTransferRequestedEventObject {
   from: string;
@@ -343,32 +356,29 @@ export interface Womdo extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    acceptedUserAddress(
+      arg0: PromiseOrValue<string>,
+      arg1: PromiseOrValue<BigNumberish>,
+      arg2: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[string]>;
+
     adOwner(
       arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<[string]>;
-
-    bytesToArray(
-      b: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber[]]>;
 
     claim(
       _adId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    decodeUint(
-      data: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
-
     donId(overrides?: CallOverrides): Promise<[string]>;
 
-    getArray(
-      _id: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber[]]>;
+    fulfillRequestLocal(
+      response: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
 
     handleOracleFulfillment(
       requestId: PromiseOrValue<BytesLike>,
@@ -394,14 +404,18 @@ export interface Womdo extends BaseContract {
     registerAd(
       _users: PromiseOrValue<BigNumberish>,
       _usdtAmount: PromiseOrValue<BigNumberish>,
+      _brandName: PromiseOrValue<string>,
+      _productName: PromiseOrValue<string>,
+      _category: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    s_lastError(overrides?: CallOverrides): Promise<[string]>;
+    returnedArray(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
 
     s_lastRequestId(overrides?: CallOverrides): Promise<[string]>;
-
-    s_lastResponse(overrides?: CallOverrides): Promise<[string]>;
 
     sendRequest(
       source: PromiseOrValue<string>,
@@ -446,32 +460,29 @@ export interface Womdo extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  acceptedUserAddress(
+    arg0: PromiseOrValue<string>,
+    arg1: PromiseOrValue<BigNumberish>,
+    arg2: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<string>;
+
   adOwner(
     arg0: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
   ): Promise<string>;
-
-  bytesToArray(
-    b: PromiseOrValue<BytesLike>,
-    overrides?: CallOverrides
-  ): Promise<BigNumber[]>;
 
   claim(
     _adId: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  decodeUint(
-    data: PromiseOrValue<BytesLike>,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
   donId(overrides?: CallOverrides): Promise<string>;
 
-  getArray(
-    _id: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
-  ): Promise<BigNumber[]>;
+  fulfillRequestLocal(
+    response: PromiseOrValue<BytesLike>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
 
   handleOracleFulfillment(
     requestId: PromiseOrValue<BytesLike>,
@@ -497,14 +508,18 @@ export interface Womdo extends BaseContract {
   registerAd(
     _users: PromiseOrValue<BigNumberish>,
     _usdtAmount: PromiseOrValue<BigNumberish>,
+    _brandName: PromiseOrValue<string>,
+    _productName: PromiseOrValue<string>,
+    _category: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  s_lastError(overrides?: CallOverrides): Promise<string>;
+  returnedArray(
+    arg0: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
   s_lastRequestId(overrides?: CallOverrides): Promise<string>;
-
-  s_lastResponse(overrides?: CallOverrides): Promise<string>;
 
   sendRequest(
     source: PromiseOrValue<string>,
@@ -547,32 +562,29 @@ export interface Womdo extends BaseContract {
 
     acceptOwnership(overrides?: CallOverrides): Promise<void>;
 
+    acceptedUserAddress(
+      arg0: PromiseOrValue<string>,
+      arg1: PromiseOrValue<BigNumberish>,
+      arg2: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<string>;
+
     adOwner(
       arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<string>;
-
-    bytesToArray(
-      b: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber[]>;
 
     claim(
       _adId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    decodeUint(
-      data: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     donId(overrides?: CallOverrides): Promise<string>;
 
-    getArray(
-      _id: PromiseOrValue<BigNumberish>,
+    fulfillRequestLocal(
+      response: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
-    ): Promise<BigNumber[]>;
+    ): Promise<void>;
 
     handleOracleFulfillment(
       requestId: PromiseOrValue<BytesLike>,
@@ -598,14 +610,18 @@ export interface Womdo extends BaseContract {
     registerAd(
       _users: PromiseOrValue<BigNumberish>,
       _usdtAmount: PromiseOrValue<BigNumberish>,
+      _brandName: PromiseOrValue<string>,
+      _productName: PromiseOrValue<string>,
+      _category: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    s_lastError(overrides?: CallOverrides): Promise<string>;
+    returnedArray(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     s_lastRequestId(overrides?: CallOverrides): Promise<string>;
-
-    s_lastResponse(overrides?: CallOverrides): Promise<string>;
 
     sendRequest(
       source: PromiseOrValue<string>,
@@ -651,18 +667,31 @@ export interface Womdo extends BaseContract {
       acceptedUserAddress?: null
     ): AdAcceptedEventFilter;
 
-    "AdRegistered(uint256,uint256,uint256,address)"(
+    "AdRegistered(uint256,uint256,uint256,address,string,string,string)"(
       adId?: null,
       totalUsers?: null,
       usdtAmount?: null,
-      brand?: null
+      brandAddress?: null,
+      brandName?: null,
+      productName?: null,
+      category?: null
     ): AdRegisteredEventFilter;
     AdRegistered(
       adId?: null,
       totalUsers?: null,
       usdtAmount?: null,
-      brand?: null
+      brandAddress?: null,
+      brandName?: null,
+      productName?: null,
+      category?: null
     ): AdRegisteredEventFilter;
+
+    "Claimed(uint256,address,uint256)"(
+      adId?: null,
+      influencer?: null,
+      share?: null
+    ): ClaimedEventFilter;
+    Claimed(adId?: null, influencer?: null, share?: null): ClaimedEventFilter;
 
     "OwnershipTransferRequested(address,address)"(
       from?: PromiseOrValue<string> | null,
@@ -707,13 +736,15 @@ export interface Womdo extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    adOwner(
-      arg0: PromiseOrValue<BigNumberish>,
+    acceptedUserAddress(
+      arg0: PromiseOrValue<string>,
+      arg1: PromiseOrValue<BigNumberish>,
+      arg2: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    bytesToArray(
-      b: PromiseOrValue<BytesLike>,
+    adOwner(
+      arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -722,16 +753,11 @@ export interface Womdo extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    decodeUint(
-      data: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     donId(overrides?: CallOverrides): Promise<BigNumber>;
 
-    getArray(
-      _id: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+    fulfillRequestLocal(
+      response: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     handleOracleFulfillment(
@@ -758,14 +784,18 @@ export interface Womdo extends BaseContract {
     registerAd(
       _users: PromiseOrValue<BigNumberish>,
       _usdtAmount: PromiseOrValue<BigNumberish>,
+      _brandName: PromiseOrValue<string>,
+      _productName: PromiseOrValue<string>,
+      _category: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    s_lastError(overrides?: CallOverrides): Promise<BigNumber>;
+    returnedArray(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     s_lastRequestId(overrides?: CallOverrides): Promise<BigNumber>;
-
-    s_lastResponse(overrides?: CallOverrides): Promise<BigNumber>;
 
     sendRequest(
       source: PromiseOrValue<string>,
@@ -809,13 +839,15 @@ export interface Womdo extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    adOwner(
-      arg0: PromiseOrValue<BigNumberish>,
+    acceptedUserAddress(
+      arg0: PromiseOrValue<string>,
+      arg1: PromiseOrValue<BigNumberish>,
+      arg2: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    bytesToArray(
-      b: PromiseOrValue<BytesLike>,
+    adOwner(
+      arg0: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -824,16 +856,11 @@ export interface Womdo extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    decodeUint(
-      data: PromiseOrValue<BytesLike>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
     donId(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    getArray(
-      _id: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
+    fulfillRequestLocal(
+      response: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     handleOracleFulfillment(
@@ -860,14 +887,18 @@ export interface Womdo extends BaseContract {
     registerAd(
       _users: PromiseOrValue<BigNumberish>,
       _usdtAmount: PromiseOrValue<BigNumberish>,
+      _brandName: PromiseOrValue<string>,
+      _productName: PromiseOrValue<string>,
+      _category: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    s_lastError(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    returnedArray(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     s_lastRequestId(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    s_lastResponse(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     sendRequest(
       source: PromiseOrValue<string>,

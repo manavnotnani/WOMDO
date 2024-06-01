@@ -15,32 +15,35 @@ contract Womdo is FunctionsClient, ConfirmedOwner {
     using FunctionsRequest for FunctionsRequest.Request;
 
     bytes32 public donId; // DON ID for the Functions DON to which the requests are sent
-
     bytes32 public s_lastRequestId;
-    bytes public s_lastResponse;
-    bytes public s_lastError;
-    uint256 public totalAds;
 
-    IERC20Metadata public USDT =
-        IERC20Metadata(0x000000000000000000000000000000000000dEaD);
+    uint256 public totalAds;
+    uint256[] public returnedArray;
+
+    IERC20Metadata public USDT;
 
     mapping(address => mapping(uint256 => AdInfo)) public userAds;
+    mapping(address => mapping(uint256 => address[]))
+        public acceptedUserAddress;
     mapping(uint256 => address) public adOwner;
     mapping(address => mapping(uint256 => bool)) public isInfluencerAccepted;
     mapping(uint256 => uint256[]) public influencerShare;
 
+    /* ======= STRUCT ======== */
     struct AdInfo {
         uint256 totalUsers;
         uint256 usdtAmount;
-        address[] acceptedUserAddress;
-        uint256[] userRatings;
     }
 
+    /* ======= EVENTS ======== */
     event AdRegistered(
         uint256 adId,
         uint256 totalUsers,
         uint256 usdtAmount,
-        address brand
+        address brandAddress,
+        string brandName,
+        string productName,
+        string category
     );
 
     event AdAccepted(
@@ -49,18 +52,29 @@ contract Womdo is FunctionsClient, ConfirmedOwner {
         address[] acceptedUserAddress
     );
 
+    event Claimed(uint256 adId, address influencer, uint256 share);
+
+    /* ======= FUNCTIONS ======== */
     constructor(
         address router,
-        bytes32 _donId
+        bytes32 _donId,
+        address _udst
     ) FunctionsClient(router) ConfirmedOwner(msg.sender) {
         donId = _donId;
+        USDT = IERC20Metadata(_udst);
     }
 
     function setDonId(bytes32 newDonId) external onlyOwner {
         donId = newDonId;
     }
 
-    function registerAd(uint256 _users, uint256 _usdtAmount) public {
+    function registerAd(
+        uint256 _users,
+        uint256 _usdtAmount,
+        string memory _brandName,
+        string memory _productName,
+        string memory _category
+    ) public {
         require(
             USDT.balanceOf(msg.sender) >= _usdtAmount,
             "User doesn't have enough balance."
@@ -76,9 +90,7 @@ contract Womdo is FunctionsClient, ConfirmedOwner {
 
         AdInfo memory adInfo = AdInfo({
             totalUsers: _users,
-            usdtAmount: _usdtAmount,
-            acceptedUserAddress: new address[](_users),
-            userRatings: new uint256[](_users)
+            usdtAmount: _usdtAmount
         });
 
         userAds[msg.sender][totalAds] = adInfo;
@@ -90,16 +102,26 @@ contract Womdo is FunctionsClient, ConfirmedOwner {
             _usdtAmount
         );
 
-        emit AdRegistered(totalAds, _users, _usdtAmount, msg.sender);
+        emit AdRegistered(
+            totalAds,
+            _users,
+            _usdtAmount,
+            msg.sender,
+            _brandName,
+            _productName,
+            _category
+        );
     }
 
     function acceptAd(uint256 _adId) public {
-        AdInfo storage adInfo = userAds[adOwner[_adId]][_adId];
+        address[] storage allInfluencers = acceptedUserAddress[adOwner[_adId]][
+            _adId
+        ];
 
-        adInfo.acceptedUserAddress.push(msg.sender);
+        allInfluencers.push(msg.sender);
         isInfluencerAccepted[msg.sender][_adId] = true;
 
-        emit AdAccepted(_adId, msg.sender, adInfo.acceptedUserAddress);
+        emit AdAccepted(_adId, msg.sender, allInfluencers);
     }
 
     function claim(uint256 _adId) public {
@@ -111,20 +133,24 @@ contract Womdo is FunctionsClient, ConfirmedOwner {
         AdInfo storage adInfo = userAds[adOwner[_adId]][_adId];
         uint256 userIndex;
 
-        for (uint256 i = 0; i < adInfo.acceptedUserAddress.length; i++) {
-            if (adInfo.acceptedUserAddress[i] == msg.sender) {
+        address[] memory allInfluencers = acceptedUserAddress[adOwner[_adId]][
+            _adId
+        ];
+
+        for (uint256 i = 0; i < allInfluencers.length; i++) {
+            if (allInfluencers[i] == msg.sender) {
                 userIndex = i;
                 break;
             }
         }
 
-        // uint256 userSharePercentage = influencerShare[_adId][userIndex];
-        uint256 userSharePercentage = 0;
-        uint256 share = (adInfo.usdtAmount * userSharePercentage) / (100_00);
+        uint256 _userSharePercentage = influencerShare[_adId][userIndex];
+        uint256 _share = (adInfo.usdtAmount * _userSharePercentage) / (100_00);
+        require(_share > 0, "Share should be greater than 0");
 
-        require(share > 0, "Share should be greater than 0");
+        TransferHelper.safeTransfer(address(USDT), msg.sender, _share);
 
-        TransferHelper.safeTransfer(address(USDT), msg.sender, share);
+        emit Claimed(_adId, msg.sender, _share);
     }
 
     function sendRequest(
@@ -166,35 +192,30 @@ contract Womdo is FunctionsClient, ConfirmedOwner {
         bytes memory response,
         bytes memory err
     ) internal override {
-        s_lastError = err;
-
-        if (response.length > 0) {
-            uint256[] memory array = abi.decode(response, (uint256[]));
-
-            influencerShare[1] = array;
-        }
+        uint256[] memory result = decodeArray(response);
+        influencerShare[result[result.length - 1]] = result;
     }
 
-    function getArray(uint256 _id) public view returns (uint256[] memory) {
-        return influencerShare[_id];
+    function fulfillRequestLocal(bytes memory response) public {
+        uint256[] memory result = decodeArray(response);
+        influencerShare[result[result.length - 1]] = result;
     }
 
-    function bytesToArray(
-        bytes memory b
-    ) public pure returns (uint256[] memory) {
-        require(b.length % 32 == 0, "Invalid bytes length");
-        uint256[] memory array = new uint256[](b.length / 32);
-        for (uint256 i = 0; i < array.length; i++) {
-            bytes32 word;
-            for (uint256 j = 0; j < 32; j++) {
-                word |= bytes32(b[i * 32 + j] & 0xFF) >> (j * 8);
+    function decodeArray(
+        bytes memory encodedData
+    ) internal pure returns (uint256[] memory) {
+        require(encodedData.length % 32 == 0, "Invalid encoded data length");
+
+        uint256[] memory result = new uint256[](encodedData.length / 32);
+
+        for (uint256 i = 0; i < result.length; i++) {
+            uint256 value;
+            assembly {
+                value := mload(add(add(encodedData, 0x20), mul(i, 0x20)))
             }
-            array[i] = uint256(word);
+            result[i] = value;
         }
-        return array;
-    }
 
-    function decodeUint(bytes memory data) public pure returns (uint256) {
-        return abi.decode(data, (uint256));
+        return result;
     }
 }

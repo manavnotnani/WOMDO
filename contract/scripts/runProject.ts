@@ -1,6 +1,12 @@
 import { ethers } from "hardhat";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
-import { Womdo, Womdo__factory } from "../typechain-types";
+import {
+  TetherUSD,
+  TetherUSD__factory,
+  Womdo,
+  Womdo__factory,
+} from "../typechain-types";
+import { extractAbi } from "../test/utilities";
 const { ReturnType, CodeLanguage } = require("@chainlink/functions-toolkit");
 
 const fs = require("fs");
@@ -8,6 +14,7 @@ const hre = require("hardhat");
 
 let owner: SignerWithAddress;
 let womdo: Womdo;
+let usdt: TetherUSD;
 
 function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -19,17 +26,18 @@ enum Location {
   DONHosted, // Hosted on the DON's storage
 }
 
-async function verify(
-  contract: string,
-  functionsRouter: string,
-  donIdBytes32: any
+async function verifyContracts(
+  womdoAddress: string,
+  functionsRouter: any,
+  donIdBytes32: any,
+  usdtAddress: string
 ) {
   await hre.run("verify:verify", {
     //Deployed contract address
-    address: contract,
+    address: womdoAddress,
 
     //Pass arguments as string and comma seprated values
-    constructorArguments: [functionsRouter, donIdBytes32],
+    constructorArguments: [functionsRouter, donIdBytes32, usdtAddress],
 
     //Path of your main contract.
     contract: "contracts/Womdo.sol:Womdo",
@@ -37,22 +45,57 @@ async function verify(
 }
 
 async function main() {
+  await extractAbi();
+
   [owner] = await ethers.getSigners();
+
+  // usdt = await new TetherUSD__factory(owner).deploy(owner.address);
+  // const deployedUsdt = await usdt.deployed();
+  // let usdtBlock = await (
+  //   await deployedUsdt.provider.getTransactionReceipt(
+  //     deployedUsdt.deployTransaction.hash
+  //   )
+  // ).blockNumber;
+
+  usdt = await new TetherUSD__factory(owner).attach(
+    "0x16a3D0bEb95D05E9c38B21Fd4Ee3672b636A102c"
+  );
 
   const functionsRouter = "0xC22a79eBA640940ABB6dF0f7982cc119578E11De";
   const donIdBytes32 = ethers.utils.formatBytes32String("fun-polygon-amoy-1");
 
-  womdo = await new Womdo__factory(owner).deploy(functionsRouter, donIdBytes32);
-  await womdo.deployed();
+  womdo = await new Womdo__factory(owner).deploy(
+    functionsRouter,
+    donIdBytes32,
+    usdt.address
+  );
+  const deployedWomdo = await womdo.deployed();
+
+  let womdoBlock = await (
+    await deployedWomdo.provider.getTransactionReceipt(
+      deployedWomdo.deployTransaction.hash
+    )
+  ).blockNumber;
 
   console.log("Womdo Address: ", womdo.address);
+  console.log("Womdo Block Number: ", womdoBlock.toString());
 
-  await verify(womdo.address, functionsRouter, donIdBytes32);
+  await verifyContracts(
+    womdo.address,
+    functionsRouter,
+    donIdBytes32,
+    usdt.address
+  );
+
+  // console.log("USDT Address: ", usdt.address);
+  // console.log("USDT Block Number: ", usdtBlock.toString());
 
   /*
 
+
+
   womdo = await new Womdo__factory(owner).attach(
-    "0x100EF36B40aADE9abD7e249FB1722bc6002e1505"
+    "0xfc4190bc9a5cc6397199f388a1da1c244891de47"
   );
 
   let source = fs.readFileSync("./get-influencer-share.js").toString();
@@ -60,7 +103,7 @@ async function main() {
   let encryptedSecretsReference = "0x";
   let args: any = [];
   let byteArgs: any = [];
-  let subscriptionId = 274;
+  let subscriptionId = 278;
   let callbackGasLimit = 100_000;
 
   const requestGasLimit = 1_750_000;
@@ -86,7 +129,7 @@ async function main() {
   console.log("Request sent...");
   await sleep(5000);
 
-  let result = await womdo.getArray(1);
+  let result = await womdo.influencerShare(2, 0);
   console.log("result::::", result.toString());
 
   */

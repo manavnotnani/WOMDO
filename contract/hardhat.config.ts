@@ -17,6 +17,10 @@ const config: HardhatUserConfig = {
       url: `https://rpc2.sepolia.org`,
       accounts: [process.env.PRIVATE_KEY as string],
     },
+    hardhat: {
+      chainId: 1337,
+      allowUnlimitedContractSize: true,
+    },
   },
 
   etherscan: {
