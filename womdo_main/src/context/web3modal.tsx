@@ -14,6 +14,32 @@ const AMOY = {
   rpcUrl: 'https://api.tatum.io/v3/blockchain/node/polygon-amoy'
 }
 
+const SCROLL_TESTNET = {
+  chainId: 534351,
+  name: 'Scroll Sepolia Testnet	',
+  currency: 'ETH',
+  explorerUrl: 'https://sepolia.scrollscan.com/',
+  rpcUrl: 'https://scroll-sepolia.drpc.org'
+}
+
+const POLYGON_zkEVM = {
+  chainId: 1442,
+  name: 'Polygon zkEVM Testnet',
+  currency: 'ETH',
+  explorerUrl: 'https://testnet-zkevm.polygonscan.com/',
+  rpcUrl: 'https://polygon-zkevm-testnet.drpc.org'
+}
+
+const SWANCHAIN = {
+  chainId: 2024,
+  name: 'Swan Chain Saturn Testnett',
+  currency: 'ETH',
+  explorerUrl: 'https://saturn-explorer.swanchain.io',
+  rpcUrl: 'https://saturn-rpc.swanchain.io'
+}
+
+
+
 // 3. Create a metadata object
 const metadata = {
   name: 'WOMDO',
@@ -38,7 +64,7 @@ const ethersConfig = defaultConfig({
 // 5. Create a Web3Modal instance
 createWeb3Modal({
   ethersConfig,
-  chains: [AMOY],
+  chains: [AMOY, SCROLL_TESTNET, POLYGON_zkEVM, SWANCHAIN],
   projectId,
   enableAnalytics: true, // Optional - defaults to your Cloud configuration
   enableOnramp: true, // Optional - false as default
