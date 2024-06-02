@@ -94,7 +94,7 @@ export async function GET(req: NextRequest, { params }: { params: any }) {
 
     // Create the result array following the order of addressArray
     const compositeScoresOrdered = addressArray.map(
-      (address) => Number(addressToScoreMap.get(address) * 100) || "0.00"
+      (address:any) => Number(addressToScoreMap.get(address) * 100) || "0.00"
     );
     compositeScoresOrdered.push(Number(params.adId));
     // Remove the appended adId from the response
