@@ -181,12 +181,12 @@ contract Womdo is FunctionsClient, ConfirmedOwner {
 
         req.secretsLocation = secretsLocation;
         req.encryptedSecretsReference = encryptedSecretsReference;
-        // if (args.length > 0) {
-        //     req.setArgs(args);
-        // }
-        // if (bytesArgs.length > 0) {
-        //     req.setBytesArgs(bytesArgs);
-        // }
+        if (args.length > 0) {
+            req.setArgs(args);
+        }
+        if (bytesArgs.length > 0) {
+            req.setBytesArgs(bytesArgs);
+        }
 
         s_lastRequestId = _sendRequest(
             req.encodeCBOR(),
