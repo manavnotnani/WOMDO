@@ -8,6 +8,7 @@ export const ROUTES = {
     INFLUENCER_PROFILE: "/influencer/profile",
     INFLUENCER_INVITATIONS: "/influencer/invitations",
     INFLUENCER_SUBMIT_VIDEO: "/influencer/submitVideo",
+    INFLUENCER_CLAIM: "/influencer/claim",
 }
 
 export const API_URL = 'http://localhost:3000/api/';
