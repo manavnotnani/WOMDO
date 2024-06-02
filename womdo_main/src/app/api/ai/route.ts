@@ -5,8 +5,8 @@ import { saveSubtitles } from "@/common/getSubtitles";
 import { translateFileToEnglish } from "@/common/translate";
 import { getContext, getContextAndCreateContent } from "@/common/extractBrand";
 import { getRating } from "@/common/claude_test_node";
-import BrandInfluencer from "@/database/models/brandCollabModel";
 import Ad from "@/database/models/adModel";
+import BrandCollab from "@/database/models/brandCollabModel";
 
 function delay(ms: any) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -52,19 +52,22 @@ export async function POST(req: NextRequest) {
       ratingNumber = 7;
     }
 
-    const updateEntry = await BrandInfluencer.updateOne(
+    const updateEntry = await BrandCollab.updateOne(
       { influencerAddress: reqObj.influencerAddress, adId: reqObj.adId },
       { rating: ratingNumber }
     );
 
     const getNumberOfTargetedAds = await Ad.findOne({ adId: reqObj.adId });
-    const getListOfSubmittedVideoInfluencers = await BrandInfluencer.find({
+    const getListOfSubmittedVideoInfluencers = await BrandCollab.find({
       adId: reqObj.adId,
       rating: { $exists: true },
     });
 
-    if (getListOfSubmittedVideoInfluencers.length == getNumberOfTargetedAds) {
-      const updateAllInfluencerEntry = await BrandInfluencer.updateMany(
+
+    console.log('to check----------',getListOfSubmittedVideoInfluencers,getNumberOfTargetedAds )
+
+    if (getListOfSubmittedVideoInfluencers.length == Number(getNumberOfTargetedAds.numberOfTargetedAds)) {
+      const updateAllInfluencerEntry = await BrandCollab.updateMany(
         { adId: reqObj.addId },
         { $set: { canClaim: true } }
       );

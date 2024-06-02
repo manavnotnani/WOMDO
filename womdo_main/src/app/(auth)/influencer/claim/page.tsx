@@ -161,6 +161,8 @@ const Claim = () => {
 
       const data = await response.json();
 
+      console.log("data.data", data.data);
+
       if (data.status) {
         setClaimBrands(data.data);
       }
