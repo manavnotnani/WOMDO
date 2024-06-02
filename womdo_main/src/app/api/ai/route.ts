@@ -68,7 +68,7 @@ export async function POST(req: NextRequest) {
 
     if (getListOfSubmittedVideoInfluencers.length == Number(getNumberOfTargetedAds.numberOfTargetedAds)) {
       const updateAllInfluencerEntry = await BrandCollab.updateMany(
-        { adId: reqObj.addId },
+        { adId: reqObj.adId },
         { $set: { canClaim: true } }
       );
       console.log('updateAllInfluencerEntry', updateAllInfluencerEntry);
