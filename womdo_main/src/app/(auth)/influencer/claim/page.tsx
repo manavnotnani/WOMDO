@@ -31,7 +31,8 @@ enum Location {
 const Claim = () => {
   const [loader, setLoader] = useState(false);
   const { address, isConnected } = useWeb3ModalAccount();
-  const [invitations, setInvitations] = useState([]);
+  const [claimBrands, setClaimBrands] = useState([]);
+  const [generateButtonDone, setGenerateButtonDone] = useState(false);
   const router = useRouter();
   const { walletProvider }: any = useWeb3ModalProvider();
 
@@ -50,35 +51,127 @@ const Claim = () => {
   return ethers.getBytes(encoded);
 `;
 
-  const handleGetInvitations = async () => {
+  const handleGenerateClaim = async (id: string) => {
+    if (!isConnected) {
+      toast.error("Please connect wallet!");
+      return;
+    }
+
+    let finalSource: any = source;
+    let secretsLocation = Location.Inline;
+    let encryptedSecretsReference = "0x";
+    let args = [id];
+    let byteArgs: any = [];
+    let subscriptionId = 295;
+    let callbackGasLimit = 100_000;
+
     try {
-      const response = await fetch(
-        API_URL + API_ROUTES.GET_INFLUENCER_INVITATIONS + address,
+      setLoader(true);
+      const ethersProvider = new ethers.providers.Web3Provider(walletProvider);
+      const signer = ethersProvider.getSigner();
+      const WomdoContract = new ethers.Contract(WomdoAddress, WomdoAbi, signer);
+      const gasLimit = await WomdoContract.estimateGas.sendRequest(
+        finalSource,
+        secretsLocation,
+        encryptedSecretsReference,
+        args,
+        byteArgs,
+        subscriptionId,
+        callbackGasLimit
+      );
+      const acceptAd = await WomdoContract.sendRequest(
+        finalSource,
+        secretsLocation,
+        encryptedSecretsReference,
+        args,
+        byteArgs,
+        subscriptionId,
+        callbackGasLimit,
         {
-          method: "GET",
+          gasLimit: gasLimit,
         }
       );
+      const reciept = await acceptAd.wait(1);
+      if (!reciept) {
+        toast.error("Generate request failed", { id: "toast" });
+        return;
+      }
+      setLoader(false);
+      toast.success("Request generated successfully!", { id: "toast" });
+
+      setTimeout(() => {
+        setGenerateButtonDone(true);
+      }, 3000);
+    } catch (error: any) {
+      setLoader(false);
+      toast.error(getError(error), { id: "toast" });
+    }
+  };
+
+  const handleGetRewardContract = async (adId: any) => {
+    try {
+      setLoader(true);
+      const ethersProvider = new ethers.providers.Web3Provider(walletProvider);
+      const signer = ethersProvider.getSigner();
+      const WomdoContract = new ethers.Contract(WomdoAddress, WomdoAbi, signer);
+      const gasLimit = await WomdoContract.estimateGas.claim(adId);
+      const acceptAd = await WomdoContract.claim(adId, {
+        gasLimit: gasLimit,
+      });
+      const reciept = await acceptAd.wait(1);
+      if (!reciept) {
+        toast.error("Claim Request failed", { id: "toast" });
+        return;
+      }
+      setLoader(false);
+      toast.success("Claim generated successfully!", { id: "toast" });
+
+      setTimeout(() => {
+        setGenerateButtonDone(true);
+      }, 3000);
+    } catch (error: any) {
+      setLoader(false);
+      toast.error(getError(error), { id: "toast" });
+    }
+  };
+
+  const handleGetReward = async (adId: string) => {
+    try {
+      const response = await fetch(API_URL + API_ROUTES.GET_REWARD + adId, {
+        method: "GET",
+      });
 
       const data = await response.json();
       if (data.status) {
-        setInvitations(data.data);
+        handleGetBrands();
       }
     } catch (error) {
       console.error("Error fetching invitations:", error);
     }
   };
 
-  const handleGenerateClaim = async (id: string) => {
-    const payload: any = {
-      source: source,
-      secretsLocation: Location.Inline,
-      encryptedSecretsReference: "0x",
-      args: [],
-      byteArgs: [],
-      subscriptionId: 278,
-      callbackGasLimit: 100_000,
-    };
+  const handleGetBrands = async () => {
+    try {
+      const response = await fetch(
+        API_URL + API_ROUTES.GET_CLAIM_BRANDS + address,
+        {
+          method: "GET",
+        }
+      );
+
+      const data = await response.json();
+
+      if (data.status) {
+        setClaimBrands(data.data);
+      }
+    } catch (error) {
+      console.error("Error fetching invitations:", error);
+    }
   };
+
+  useEffect(() => {
+    handleGetBrands();
+  }, []);
 
   return (
     <section className="claim_page">
@@ -96,37 +189,41 @@ const Claim = () => {
                   <th>#</th>
                   <th>Brand Name</th>
                   <th>Product Name</th>
-                  <th>Brand Address</th>
-                  <th>Status</th>
                   <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {invitations && invitations.length ? (
-                  invitations.map((invitation: any, index) => (
+                {claimBrands && claimBrands.length ? (
+                  claimBrands.map((invitation: any, index) => (
                     <tr key={invitation.adId}>
                       <td>{index + 1}</td>
                       <td>{invitation.brandName}</td>
                       <td>{invitation.productName}</td>
-                      <td>{invitation.brandAddress}</td>
-                      <td>
-                        {invitation.acceptedStatus ? "Accepted" : "Pending"}
-                      </td>
-                      <td>
-                        {invitation.acceptedStatus ? (
-                          "---"
-                        ) : (
-                          <>
+                      {invitation.canClaim ? (
+                        <td>
+                          {generateButtonDone ? (
                             <Button
                               variant="success"
-                              onClick={() => handleAccept(invitation.adId)}
-                              disabled={invitation.acceptedStatus}
+                              onClick={() =>
+                                handleGetRewardContract(invitation.adId)
+                              }
+                            >
+                              Claim Reward
+                            </Button>
+                          ) : (
+                            <Button
+                              variant="success"
+                              onClick={() =>
+                                handleGenerateClaim(invitation.adId)
+                              }
                             >
                               Generate Reward
-                            </Button>{" "}
-                          </>
-                        )}
-                      </td>
+                            </Button>
+                          )}
+                        </td>
+                      ) : (
+                        <td>Not Generated</td>
+                      )}
                     </tr>
                   ))
                 ) : (

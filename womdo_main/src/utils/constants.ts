@@ -21,7 +21,9 @@ export const API_ROUTES = {
   GET_BRAND_AD: "brand/getAd/",
   BRAND_SEND_REQUEST: "brand/send/request/",
   AI: "ai",
+  GET_CLAIM_BRANDS: "influencer/getClaim/",
+  GET_REWARD: "influencer/claim/",
 };
 
-export const WomdoAddress = "0x4Af5E31A8d7cb92BaE8f8DB1E168CE9ad4dD51cA";
+export const WomdoAddress = "0x962E9A8123d746Bdd0E33057FE2b5E1D51B056Db";
 export const UsdtAddress = "0x16a3D0bEb95D05E9c38B21Fd4Ee3672b636A102c";

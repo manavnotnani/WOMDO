@@ -13,7 +13,7 @@ export async function GET(req: NextRequest, { params }: { params: any }) {
     console.log("walletAddressRegex", walletAddressRegex);
 
     const influencerDetails = await BrandCollab.find({
-      wallet: { $regex: walletAddressRegex },
+      influencerAddress: { $regex: walletAddressRegex },
       rating: { $exists: true },
     });
 
