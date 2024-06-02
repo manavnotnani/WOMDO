@@ -40,6 +40,7 @@ export interface WomdoInterface extends utils.Interface {
     "handleOracleFulfillment(bytes32,bytes,bytes)": FunctionFragment;
     "influencerShare(uint256,uint256)": FunctionFragment;
     "isInfluencerAccepted(address,uint256)": FunctionFragment;
+    "isInfluencerClaimed(address,uint256)": FunctionFragment;
     "owner()": FunctionFragment;
     "registerAd(uint256,uint256,string)": FunctionFragment;
     "returnedArray(uint256)": FunctionFragment;
@@ -64,6 +65,7 @@ export interface WomdoInterface extends utils.Interface {
       | "handleOracleFulfillment"
       | "influencerShare"
       | "isInfluencerAccepted"
+      | "isInfluencerClaimed"
       | "owner"
       | "registerAd"
       | "returnedArray"
@@ -119,6 +121,10 @@ export interface WomdoInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "isInfluencerAccepted",
+    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "isInfluencerClaimed",
     values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
@@ -191,6 +197,10 @@ export interface WomdoInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "isInfluencerAccepted",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "isInfluencerClaimed",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
@@ -395,6 +405,12 @@ export interface Womdo extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
+    isInfluencerClaimed(
+      arg0: PromiseOrValue<string>,
+      arg1: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
     owner(overrides?: CallOverrides): Promise<[string]>;
 
     registerAd(
@@ -497,6 +513,12 @@ export interface Womdo extends BaseContract {
     overrides?: CallOverrides
   ): Promise<boolean>;
 
+  isInfluencerClaimed(
+    arg0: PromiseOrValue<string>,
+    arg1: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
   owner(overrides?: CallOverrides): Promise<string>;
 
   registerAd(
@@ -592,6 +614,12 @@ export interface Womdo extends BaseContract {
     ): Promise<BigNumber>;
 
     isInfluencerAccepted(
+      arg0: PromiseOrValue<string>,
+      arg1: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    isInfluencerClaimed(
       arg0: PromiseOrValue<string>,
       arg1: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -765,6 +793,12 @@ export interface Womdo extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    isInfluencerClaimed(
+      arg0: PromiseOrValue<string>,
+      arg1: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     owner(overrides?: CallOverrides): Promise<BigNumber>;
 
     registerAd(
@@ -861,6 +895,12 @@ export interface Womdo extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     isInfluencerAccepted(
+      arg0: PromiseOrValue<string>,
+      arg1: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    isInfluencerClaimed(
       arg0: PromiseOrValue<string>,
       arg1: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides

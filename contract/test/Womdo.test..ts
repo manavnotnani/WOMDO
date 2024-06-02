@@ -54,7 +54,9 @@ describe("Lock", function () {
       .approve(womdo.address, convertWithDecimal(10000, 10 ** 6));
 
     console.log("Registering an ad..");
-    await womdo.connect(brand).registerAd(4, convertWithDecimal(100, 10 ** 6));
+    await womdo
+      .connect(brand)
+      .registerAd(4, convertWithDecimal(100, 10 ** 6), "Burger");
 
     console.log("Users accepting ads..");
     await womdo.connect(user1).acceptAd(1);
@@ -63,11 +65,11 @@ describe("Lock", function () {
     await womdo.connect(user4).acceptAd(1);
 
     console.log("Setting the subscription..");
-    let bytesData = getInfluencerShareBytes();
 
+    let bytesData = getInfluencerShareBytes();
     await womdo.fulfillRequestLocal(bytesData);
 
-    let user1Share = await womdo.influencerShare(1, 0);
+    let user1Share = await womdo.influencerShare(3, 1);
     console.log("User1 Share::: ", user1Share.toString());
 
     let user1Balance = await usdt.balanceOf(user1.address);

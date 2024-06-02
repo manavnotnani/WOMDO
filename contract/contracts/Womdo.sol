@@ -210,21 +210,27 @@ contract Womdo is FunctionsClient, ConfirmedOwner {
         influencerShare[result[result.length - 1]] = result;
     }
 
+    // function decodeArray(
+    //     bytes memory encodedData
+    // ) internal pure returns (uint256[] memory) {
+    //     require(encodedData.length % 32 == 0, "Invalid encoded data length");
+
+    //     uint256[] memory result = new uint256[](encodedData.length / 32);
+
+    //     for (uint256 i = 0; i < result.length; i++) {
+    //         uint256 value;
+    //         assembly {
+    //             value := mload(add(add(encodedData, 0x20), mul(i, 0x20)))
+    //         }
+    //         result[i] = value;
+    //     }
+
+    //     return result;
+    // }
+
     function decodeArray(
-        bytes memory encodedData
+        bytes memory encodedArray
     ) internal pure returns (uint256[] memory) {
-        require(encodedData.length % 32 == 0, "Invalid encoded data length");
-
-        uint256[] memory result = new uint256[](encodedData.length / 32);
-
-        for (uint256 i = 0; i < result.length; i++) {
-            uint256 value;
-            assembly {
-                value := mload(add(add(encodedData, 0x20), mul(i, 0x20)))
-            }
-            result[i] = value;
-        }
-
-        return result;
+        return abi.decode(encodedArray, (uint256[]));
     }
 }
