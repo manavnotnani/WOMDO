@@ -27,6 +27,12 @@ To get started with WOMDO:
 No installation required. Simply access the WOMDO platform through your web browser.
 https://womdo.vercel.app
 
+For running locally
+add this env file to womdo_main: 
+NEXT_PUBLIC_PROJECT_ID=<add project Id>
+DATABASE_URL=<add mongo db url>
+ANTHROPIC_API_KEY=<claude API key>
+
 ## Contributing
 We welcome contributions to WOMDO! Feel free to submit bug reports, feature requests, or pull requests to help improve the platform.
 
