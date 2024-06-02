@@ -41,7 +41,7 @@ export interface WomdoInterface extends utils.Interface {
     "influencerShare(uint256,uint256)": FunctionFragment;
     "isInfluencerAccepted(address,uint256)": FunctionFragment;
     "owner()": FunctionFragment;
-    "registerAd(uint256,uint256,string,string,string)": FunctionFragment;
+    "registerAd(uint256,uint256,string)": FunctionFragment;
     "returnedArray(uint256)": FunctionFragment;
     "s_lastRequestId()": FunctionFragment;
     "sendRequest(string,uint8,bytes,string[],bytes[],uint64,uint32)": FunctionFragment;
@@ -127,8 +127,6 @@ export interface WomdoInterface extends utils.Interface {
     values: [
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<BigNumberish>,
-      PromiseOrValue<string>,
-      PromiseOrValue<string>,
       PromiseOrValue<string>
     ]
   ): string;
@@ -219,7 +217,7 @@ export interface WomdoInterface extends utils.Interface {
 
   events: {
     "AdAccepted(uint256,address,address[])": EventFragment;
-    "AdRegistered(uint256,uint256,uint256,address,string,string,string)": EventFragment;
+    "AdRegistered(uint256,uint256,uint256,address,string)": EventFragment;
     "Claimed(uint256,address,uint256)": EventFragment;
     "OwnershipTransferRequested(address,address)": EventFragment;
     "OwnershipTransferred(address,address)": EventFragment;
@@ -253,12 +251,10 @@ export interface AdRegisteredEventObject {
   totalUsers: BigNumber;
   usdtAmount: BigNumber;
   brandAddress: string;
-  brandName: string;
   productName: string;
-  category: string;
 }
 export type AdRegisteredEvent = TypedEvent<
-  [BigNumber, BigNumber, BigNumber, string, string, string, string],
+  [BigNumber, BigNumber, BigNumber, string, string],
   AdRegisteredEventObject
 >;
 
@@ -404,9 +400,7 @@ export interface Womdo extends BaseContract {
     registerAd(
       _users: PromiseOrValue<BigNumberish>,
       _usdtAmount: PromiseOrValue<BigNumberish>,
-      _brandName: PromiseOrValue<string>,
       _productName: PromiseOrValue<string>,
-      _category: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -508,9 +502,7 @@ export interface Womdo extends BaseContract {
   registerAd(
     _users: PromiseOrValue<BigNumberish>,
     _usdtAmount: PromiseOrValue<BigNumberish>,
-    _brandName: PromiseOrValue<string>,
     _productName: PromiseOrValue<string>,
-    _category: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -610,9 +602,7 @@ export interface Womdo extends BaseContract {
     registerAd(
       _users: PromiseOrValue<BigNumberish>,
       _usdtAmount: PromiseOrValue<BigNumberish>,
-      _brandName: PromiseOrValue<string>,
       _productName: PromiseOrValue<string>,
-      _category: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -667,23 +657,19 @@ export interface Womdo extends BaseContract {
       acceptedUserAddress?: null
     ): AdAcceptedEventFilter;
 
-    "AdRegistered(uint256,uint256,uint256,address,string,string,string)"(
+    "AdRegistered(uint256,uint256,uint256,address,string)"(
       adId?: null,
       totalUsers?: null,
       usdtAmount?: null,
       brandAddress?: null,
-      brandName?: null,
-      productName?: null,
-      category?: null
+      productName?: null
     ): AdRegisteredEventFilter;
     AdRegistered(
       adId?: null,
       totalUsers?: null,
       usdtAmount?: null,
       brandAddress?: null,
-      brandName?: null,
-      productName?: null,
-      category?: null
+      productName?: null
     ): AdRegisteredEventFilter;
 
     "Claimed(uint256,address,uint256)"(
@@ -784,9 +770,7 @@ export interface Womdo extends BaseContract {
     registerAd(
       _users: PromiseOrValue<BigNumberish>,
       _usdtAmount: PromiseOrValue<BigNumberish>,
-      _brandName: PromiseOrValue<string>,
       _productName: PromiseOrValue<string>,
-      _category: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -887,9 +871,7 @@ export interface Womdo extends BaseContract {
     registerAd(
       _users: PromiseOrValue<BigNumberish>,
       _usdtAmount: PromiseOrValue<BigNumberish>,
-      _brandName: PromiseOrValue<string>,
       _productName: PromiseOrValue<string>,
-      _category: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

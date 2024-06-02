@@ -27,6 +27,7 @@ contract Womdo is FunctionsClient, ConfirmedOwner {
         public acceptedUserAddress;
     mapping(uint256 => address) public adOwner;
     mapping(address => mapping(uint256 => bool)) public isInfluencerAccepted;
+    mapping(address => mapping(uint256 => bool)) public isInfluencerClaimed;
     mapping(uint256 => uint256[]) public influencerShare;
 
     /* ======= STRUCT ======== */
@@ -41,9 +42,7 @@ contract Womdo is FunctionsClient, ConfirmedOwner {
         uint256 totalUsers,
         uint256 usdtAmount,
         address brandAddress,
-        string brandName,
-        string productName,
-        string category
+        string productName
     );
 
     event AdAccepted(
@@ -71,9 +70,7 @@ contract Womdo is FunctionsClient, ConfirmedOwner {
     function registerAd(
         uint256 _users,
         uint256 _usdtAmount,
-        string memory _brandName,
-        string memory _productName,
-        string memory _category
+        string memory _productName
     ) public {
         require(
             USDT.balanceOf(msg.sender) >= _usdtAmount,
@@ -107,16 +104,24 @@ contract Womdo is FunctionsClient, ConfirmedOwner {
             _users,
             _usdtAmount,
             msg.sender,
-            _brandName,
-            _productName,
-            _category
+            _productName
         );
     }
 
     function acceptAd(uint256 _adId) public {
+        require(_adId <= totalAds, "Invalid adId");
+
         address[] storage allInfluencers = acceptedUserAddress[adOwner[_adId]][
             _adId
         ];
+
+        AdInfo memory _adInfo = userAds[adOwner[_adId]][_adId];
+
+        require(allInfluencers.length < _adInfo.totalUsers, "Ad is full");
+        require(
+            !isInfluencerAccepted[msg.sender][_adId],
+            "Influencer already accepted"
+        );
 
         allInfluencers.push(msg.sender);
         isInfluencerAccepted[msg.sender][_adId] = true;
@@ -129,6 +134,8 @@ contract Womdo is FunctionsClient, ConfirmedOwner {
             isInfluencerAccepted[msg.sender][_adId],
             "Influencer is not applicable to claim"
         );
+
+        require(!isInfluencerClaimed[msg.sender][_adId], "Already Claimed");
 
         AdInfo storage adInfo = userAds[adOwner[_adId]][_adId];
         uint256 userIndex;
@@ -147,6 +154,8 @@ contract Womdo is FunctionsClient, ConfirmedOwner {
         uint256 _userSharePercentage = influencerShare[_adId][userIndex];
         uint256 _share = (adInfo.usdtAmount * _userSharePercentage) / (100_00);
         require(_share > 0, "Share should be greater than 0");
+
+        isInfluencerClaimed[msg.sender][_adId] = true;
 
         TransferHelper.safeTransfer(address(USDT), msg.sender, _share);
 
