@@ -13,8 +13,10 @@ import { API_ROUTES, API_URL, ROUTES } from "@/utils/constants";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import Loader from "@/components/loader/loader";
 
 const SubmitVideo = () => {
+  const [loader, setLoader] = useState(false);
   const { address, isConnected } = useWeb3ModalAccount();
   const [invitations, setInvitations]: any = useState([]);
   const router = useRouter();
@@ -97,6 +99,8 @@ const SubmitVideo = () => {
     <section className="video_page">
       {!isConnected ? (
         <ConnectWalletAlert />
+      ) : loader ? (
+        <Loader />
       ) : (
         <Container>
           <SmallTitle title="Submit Your Video" className="text-start" />
