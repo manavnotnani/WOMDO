@@ -34,6 +34,9 @@ const BrandCollabSchema = new Schema({
   }, 
   brandAddress: {
     type: String
+  },
+  subscribers: {
+    type: Number
   }
 });
 

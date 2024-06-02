@@ -13,7 +13,7 @@ function delay(ms: any) {
 
 export async function POST(req: NextRequest) {
   try {
-    // await connectToDb()
+    await connectToDb();
     const reqObj = await req.json();
     console.log("reqObj", reqObj);
 
@@ -51,9 +51,12 @@ export async function POST(req: NextRequest) {
       ratingNumber = 7;
     }
 
-    const updateEntry = await BrandInfluencer.updateOne({influencerAddress: reqObj.wallet, addId: reqObj.addId}, {rating: ratingNumber })
+    const updateEntry = await BrandInfluencer.updateOne(
+      { influencerAddress: reqObj.influencerAddress, adId: reqObj.adId },
+      { rating: ratingNumber }
+    );
 
-    console.log('updateEntry', updateEntry);
+    console.log("updateEntry", updateEntry);
     // const newObject = new BrandInfluencer({videoId: reqObj.videoId,rating: ratingNumber })
 
     // const newPrompt = new Brand(reqObj);

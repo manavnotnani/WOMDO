@@ -24,7 +24,7 @@ export async function getRating(content) {
   return message.content;
       // console.log(message.content);
     } catch (error) {
-      console.error("Error getting rating:", error);
+      console.error("Error getting rating:-----", error);
     }
   }
   

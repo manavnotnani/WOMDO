@@ -17,6 +17,9 @@ const AdSchema = new Schema({
   addId: {
     type: String,
   },
+  acceptedUserAddress: {
+    type: [String]
+  }
 });
 
 const Ad = models.Brand || model("Ad", AdSchema);
