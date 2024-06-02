@@ -40,10 +40,12 @@
 
     h3 {
         font-size: 6rem;
+        margin: 8rem 0rem 2rem;
+
 
         @media (max-width: 1479px) {
             font-size: 4rem;
-            margin: 10rem 0rem 2rem;
+            margin: 8rem 0rem 2rem;
         }
 
         @media (max-width: 1199px) {
@@ -63,6 +65,14 @@
         //     font-size: 6rem;
         //     margin: -2rem 0 1rem;
         // }
+    }
+
+    h4 {
+        font-size: 24px;
+    }
+
+    h5 {
+        font-size: 20px;
     }
 
     .selection_btn {
