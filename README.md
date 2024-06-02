@@ -29,9 +29,9 @@ https://womdo.vercel.app
 
 For running locally
 add this env file to womdo_main: 
-NEXT_PUBLIC_PROJECT_ID=<add project Id>
-DATABASE_URL=<add mongo db url>
-ANTHROPIC_API_KEY=<claude API key>
+NEXT_PUBLIC_PROJECT_ID=<add_project_Id>
+DATABASE_URL=<add_mongo_db_url>
+ANTHROPIC_API_KEY=<insert_claude_API_key>
 
 ## Contributing
 We welcome contributions to WOMDO! Feel free to submit bug reports, feature requests, or pull requests to help improve the platform.
