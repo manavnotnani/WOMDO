@@ -33,6 +33,7 @@ const Claim = () => {
   const { address, isConnected } = useWeb3ModalAccount();
   const [claimBrands, setClaimBrands] = useState([]);
   const [generateButtonDone, setGenerateButtonDone] = useState(false);
+  const [claimDone, setClaimDone] = useState(false);
   const router = useRouter();
   const { walletProvider }: any = useWeb3ModalProvider();
 
@@ -150,7 +151,7 @@ const Claim = () => {
       toast.success("Claim generated successfully!", { id: "toast" });
 
       setTimeout(() => {
-        setGenerateButtonDone(true);
+        setClaimDone(true);
       }, 3000);
     } catch (error: any) {
       setLoader(false);
@@ -226,7 +227,11 @@ const Claim = () => {
                       <td>{invitation.productName}</td>
                       {invitation.canClaim ? (
                         <td>
-                          {generateButtonDone ? (
+                          {claimDone ? (
+                            <Button variant="success" disabled={true}>
+                              Claimed
+                            </Button>
+                          ) : generateButtonDone ? (
                             <Button
                               variant="success"
                               onClick={() =>
