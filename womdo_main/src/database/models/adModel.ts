@@ -14,7 +14,7 @@ const AdSchema = new Schema({
   numberOfTargetedAds: {
     type: Number,
   },
-  addId: {
+  adId: {
     type: String,
   },
   acceptedUserAddress: {
@@ -22,6 +22,6 @@ const AdSchema = new Schema({
   }
 });
 
-const Ad = models.Brand || model("Ad", AdSchema);
+const Ad = models.Ad || model("Ad", AdSchema);
 
 export default Ad;

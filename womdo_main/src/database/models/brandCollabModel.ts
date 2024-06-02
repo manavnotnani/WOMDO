@@ -41,7 +41,7 @@ const BrandCollabSchema = new Schema({
 });
 
 // Create a unique compound index on addId and influencerAddress
-BrandCollabSchema.index({ addId: 1, influencerAddress: 1 }, { unique: true });
+BrandCollabSchema.index({ adId: 1, influencerAddress: 1 }, { unique: true });
 
 const BrandCollab =
   models.BrandCollab || model("BrandCollab", BrandCollabSchema);
