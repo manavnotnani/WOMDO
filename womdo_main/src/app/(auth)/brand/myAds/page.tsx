@@ -17,9 +17,9 @@ import UsdtAbi from "../../abi/TetherUSD.json";
 
 const MyAds = () => {
   const { address, isConnected } = useWeb3ModalAccount();
-  const { walletProvider }: any = useWeb3ModalProvider();
+  const { walletProvider }: any= useWeb3ModalProvider();
   const [userData, setUserData]: any = useState({});
-  const [decimals, setDecimals]: any = useState(6);
+  const [decimals, setDecimals] = useState(6);
 
   const router = useRouter();
 
@@ -62,7 +62,6 @@ const MyAds = () => {
     setDecimals(decimal);
   };
 
-
   return (
     <section className="myAds_page">
       <SmallTitle title="My Ads" className="text-start" />
@@ -71,36 +70,40 @@ const MyAds = () => {
       ) : (
         <Container>
           <Row>
-            {userData
-              ? userData?.ads?.map((ad: any) => (
-                  <Col xl={4} sm={6} key={ad._id}>
-                    <div className="myAds_card">
-                      <div className="myAds_card_img"></div>
-                      <h3>{ad.productName}</h3>
-                      <div className="myAds_progress">
-                        <div className="myAds_progress_details">
-                          <h4>Budget</h4>
-                          <p>{`${ethers.utils.formatUnits(
-                            ad.budget,
-                            decimals
-                          )} USDT`}</p>
-                        </div>
-                        <div className="myAds_progress_details">
-                          <h4>Number of Ads</h4>
-                          <p>{ad.numberOfTargetedAds}</p>
-                        </div>
-                        <div className="myAds_progress_details">
-                          <h4>Ad Id</h4>
-                          <p>{ad.adId}</p>
-                        </div>
+            {userData?.ads && userData.ads.length > 0 ? (
+              userData.ads.map((ad: any) => (
+                <Col xl={4} sm={6} key={ad._id}>
+                  <div className="myAds_card">
+                    <div className="myAds_card_img"></div>
+                    <h3>{ad.productName}</h3>
+                    <div className="myAds_progress">
+                      <div className="myAds_progress_details">
+                        <h4>Budget</h4>
+                        <p>{`${ethers.utils.formatUnits(
+                          ad.budget,
+                          decimals
+                        )} USDT`}</p>
                       </div>
-                      {/* <Button fluid className="custom_btn">
-                    Check stats
-                  </Button> */}
+                      <div className="myAds_progress_details">
+                        <h4>Number of Ads</h4>
+                        <p>{ad.numberOfTargetedAds}</p>
+                      </div>
+                      <div className="myAds_progress_details">
+                        <h4>Ad Id</h4>
+                        <p>{ad.adId}</p>
+                      </div>
                     </div>
-                  </Col>
-                ))
-              : "No data found!"}
+                    {/* <Button fluid className="custom_btn">
+                      Check stats
+                    </Button> */}
+                  </div>
+                </Col>
+              ))
+            ) : (
+              <Col>
+                <p>No data found!</p>
+              </Col>
+            )}
           </Row>
         </Container>
       )}

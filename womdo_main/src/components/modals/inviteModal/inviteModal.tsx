@@ -76,6 +76,7 @@ const InviteModal = (props: TProps) => {
     console.log("data", data);
     if (data.status) {
       toast.success(data.message, { id: "toast" });
+      props.handleClose()
     } else {
       toast.error(data.message, { id: "toast" });
     }
