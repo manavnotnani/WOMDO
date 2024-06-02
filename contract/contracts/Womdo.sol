@@ -170,7 +170,7 @@ contract Womdo is FunctionsClient, ConfirmedOwner {
         bytes[] calldata bytesArgs,
         uint64 subscriptionId,
         uint32 callbackGasLimit
-    ) external onlyOwner {
+    ) external {
         FunctionsRequest.Request memory req;
 
         req.initializeRequest(

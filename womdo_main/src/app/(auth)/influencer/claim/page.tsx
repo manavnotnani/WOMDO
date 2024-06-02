@@ -43,7 +43,7 @@ const Claim = () => {
   const adId = args[0];
   
   const apiResponse = await Functions.makeHttpRequest({
-    url: 'http://localhost:3000/api/influencer/claim/' + adId,
+    url: 'https://womdo.vercel.app/claim/' + adId,
   });
   
   const { data } = apiResponse;
@@ -62,7 +62,7 @@ const Claim = () => {
     let encryptedSecretsReference = "0x";
     let args = [id];
     let byteArgs: any = [];
-    let subscriptionId = 295;
+    let subscriptionId = 298;
     let callbackGasLimit = 100_000;
 
     try {

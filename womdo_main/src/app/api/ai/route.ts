@@ -63,15 +63,21 @@ export async function POST(req: NextRequest) {
       rating: { $exists: true },
     });
 
+    console.log(
+      "to check----------",
+      getListOfSubmittedVideoInfluencers,
+      getNumberOfTargetedAds
+    );
 
-    console.log('to check----------',getListOfSubmittedVideoInfluencers,getNumberOfTargetedAds )
-
-    if (getListOfSubmittedVideoInfluencers.length == Number(getNumberOfTargetedAds.numberOfTargetedAds)) {
+    if (
+      getListOfSubmittedVideoInfluencers.length ==
+      Number(getNumberOfTargetedAds.numberOfTargetedAds)
+    ) {
       const updateAllInfluencerEntry = await BrandCollab.updateMany(
-        { adId: reqObj.addId },
+        { adId: reqObj.adId },
         { $set: { canClaim: true } }
       );
-      console.log('updateAllInfluencerEntry', updateAllInfluencerEntry);
+      console.log("updateAllInfluencerEntry", updateAllInfluencerEntry);
     }
 
     console.log("updateEntry", updateEntry);
