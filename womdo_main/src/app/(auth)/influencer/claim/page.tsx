@@ -22,6 +22,12 @@ import WomdoAbi from "../../abi/Womdo.json";
 import { getError } from "@/utils/common.service";
 import Loader from "@/components/loader/loader";
 
+enum Location {
+  Inline, // Provided within the Request
+  Remote, // Hosted through remote location that can be accessed through a provided URL
+  DONHosted, // Hosted on the DON's storage
+}
+
 const Claim = () => {
   const [loader, setLoader] = useState(false);
   const { address, isConnected } = useWeb3ModalAccount();
@@ -29,11 +35,20 @@ const Claim = () => {
   const router = useRouter();
   const { walletProvider }: any = useWeb3ModalProvider();
 
-  useEffect(() => {
-    if (isConnected) {
-      handleCheckUserIsValid();
-    }
-  }, [isConnected]);
+  let source = `
+  const { ethers } = await import("npm:ethers@6.12.1");
+  const abiCoder = ethers.AbiCoder.defaultAbiCoder();
+  
+  const adId = args[0];
+  
+  const apiResponse = await Functions.makeHttpRequest({
+    url: 'http://localhost:3000/api/influencer/claim/' + adId,
+  });
+  
+  const { data } = apiResponse;
+  const encoded = abiCoder.encode(['uint256[]'], [uint256Array]);
+  return ethers.getBytes(encoded);
+`;
 
   const handleGetInvitations = async () => {
     try {
@@ -53,58 +68,17 @@ const Claim = () => {
     }
   };
 
-  const handleCheckUserIsValid = async () => {
-    try {
-      let response = await fetch(
-        API_URL + API_ROUTES.GET_INFLUENCER + "/" + address,
-        {
-          method: "GET",
-        }
-      );
-
-      if (!response.ok) {
-        toast.error(
-          "Influencer does not exist with this wallet address. Please create your profile.",
-          { id: "toast" }
-        );
-        router.push(ROUTES.INFLUENCER_PROFILE);
-      } else {
-        handleGetInvitations();
-      }
-    } catch (error) {
-      console.error("Error checking user existence:", error);
-    }
+  const handleGenerateClaim = async (id: string) => {
+    const payload: any = {
+      source: source,
+      secretsLocation: Location.Inline,
+      encryptedSecretsReference: "0x",
+      args: [],
+      byteArgs: [],
+      subscriptionId: 278,
+      callbackGasLimit: 100_000,
+    };
   };
-
-  const handleAccept = async (id: string) => {
-    console.log("id", id);
-    if (!isConnected) {
-      toast.error("Please connect wallet!");
-      return;
-    }
-
-    try {
-      setLoader(true);
-      const ethersProvider = new ethers.providers.Web3Provider(walletProvider);
-      const signer = ethersProvider.getSigner();
-      const WomdoContract = new ethers.Contract(WomdoAddress, WomdoAbi, signer);
-      const gasLimit = await WomdoContract.estimateGas.acceptAd(id);
-      const acceptAd = await WomdoContract.acceptAd(id, {
-        gasLimit: gasLimit,
-      });
-      const reciept = await acceptAd.wait(1);
-      if (!reciept) {
-        toast.error("Register Ad failed", { id: "toast" });
-        return;
-      }
-      setLoader(false);
-      toast.success("Invitation accepted successfully!", { id: "toast" });
-    } catch (error: any) {
-      setLoader(false);
-      toast.error(getError(error), { id: "toast" });
-    }
-  };
-
 
   return (
     <section className="claim_page">
@@ -148,7 +122,7 @@ const Claim = () => {
                               onClick={() => handleAccept(invitation.adId)}
                               disabled={invitation.acceptedStatus}
                             >
-                              Accept
+                              Generate Reward
                             </Button>{" "}
                           </>
                         )}
