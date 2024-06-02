@@ -43,7 +43,6 @@ const AdOnboardForm: React.FC = () => {
     }),
     onSubmit: async (values) => {
       // Handle form submission
-      console.log("Form data:", values);
 
       if (!isConnected) {
         toast.error("Please connect wallet!");

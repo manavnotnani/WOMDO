@@ -62,7 +62,6 @@ const MyAds = () => {
     setDecimals(decimal);
   };
 
-  console.log("userData", userData);
 
   return (
     <section className="myAds_page">

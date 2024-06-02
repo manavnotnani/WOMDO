@@ -64,7 +64,6 @@ const BrandOnboardForm: React.FC<BrandOnboardFormProps> = ({
         headers: headersList,
       });
       const data = await response.json();
-      console.log("data", data);
       if (data.status) {
         toast.success(data.message, { id: "toast" });
         handleRefresh();

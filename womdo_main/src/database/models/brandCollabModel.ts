@@ -44,6 +44,6 @@ const BrandCollabSchema = new Schema({
 BrandCollabSchema.index({ addId: 1, influencerAddress: 1 }, { unique: true });
 
 const BrandCollab =
-  models.BrandInfluencer || model("BrandCollab", BrandCollabSchema);
+  models.BrandCollab || model("BrandCollab", BrandCollabSchema);
 
 export default BrandCollab;
