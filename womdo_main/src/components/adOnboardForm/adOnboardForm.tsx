@@ -19,7 +19,6 @@ import SmallTitle from "../smalltitle/smalltitle";
 
 interface FormValues {
   productName: string;
-  category: string;
   amount: string;
   noOfInfluencers: string;
 }
@@ -29,29 +28,14 @@ const AdOnboardForm: React.FC = () => {
   const { address, isConnected } = useWeb3ModalAccount();
   const { walletProvider }: any = useWeb3ModalProvider();
 
-  const categories = [
-    "Music",
-    "Lifestyle",
-    "Education",
-    "Sports",
-    "Gaming",
-    "News",
-    "Comedy",
-    "Entertainment",
-    "Film & Animation",
-    "Science & Technology",
-    "Travel & Events",
-  ];
   const formik = useFormik<FormValues>({
     initialValues: {
       productName: "",
-      category: "",
       amount: "",
       noOfInfluencers: "",
     },
     validationSchema: Yup.object({
       productName: Yup.string().required("Brand Name is required"),
-      category: Yup.string().required("Category is required"),
       amount: Yup.string().required("Budget is required"),
       noOfInfluencers: Yup.string().required(
         "Number of Influencers is required"
@@ -81,7 +65,7 @@ const AdOnboardForm: React.FC = () => {
           const approval = await UsdtContract.approve(WomdoAddress, amount);
           const reciept = await approval.wait(1);
           if (!reciept) {
-            toast.error("Approval failed");
+            toast.error("Approval failed", { id: "toast" });
             return;
           }
         }
@@ -94,21 +78,19 @@ const AdOnboardForm: React.FC = () => {
         const registerAd = await WomdoContract.registerAd(
           values.noOfInfluencers,
           amount,
-          'test',
-          values.productName,
-          values.category
+          values.productName
         );
         const reciept = await registerAd.wait(1);
         if (!reciept) {
-          toast.error("Register Ad failed");
+          toast.error("Register Ad failed", { id: "toast" });
           return;
         }
         formik.resetForm();
         setLoader(false);
-        toast.success("Ad registered successfully!");
+        toast.success("Ad registered successfully!", { id: "toast" });
       } catch (error: any) {
         setLoader(false);
-        toast.error(getError(error));
+        toast.error(getError(error), { id: "toast" });
       }
     },
   });
@@ -134,27 +116,6 @@ const AdOnboardForm: React.FC = () => {
                     />
                     <Form.Control.Feedback type="invalid">
                       {formik.errors.productName}
-                    </Form.Control.Feedback>
-                  </Form.Group>
-
-                  <Form.Group controlId="category" className="form-group">
-                    <Form.Label>Category</Form.Label>
-                    <Form.Control
-                      as="select"
-                      {...formik.getFieldProps("category")}
-                      isInvalid={
-                        !!formik.errors.category && formik.touched.category
-                      }
-                    >
-                      <option value="">Select a category</option>
-                      {categories.map((category, index) => (
-                        <option key={index} value={category}>
-                          {category}
-                        </option>
-                      ))}
-                    </Form.Control>
-                    <Form.Control.Feedback type="invalid">
-                      {formik.errors.category}
                     </Form.Control.Feedback>
                   </Form.Group>
 

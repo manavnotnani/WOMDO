@@ -68,7 +68,7 @@ const InfluencerOnboardForm: React.FC<InfluencerOnboardFormProps> = ({ handleRef
     }),
     onSubmit: async (values) => {
       if (!isConnected) {
-        toast.error("Please connect wallet!");
+        toast.error("Please connect wallet!", { id: "toast" });
         return;
       }
       let headersList = {
@@ -94,10 +94,10 @@ const InfluencerOnboardForm: React.FC<InfluencerOnboardFormProps> = ({ handleRef
       const data = await response.json()
       console.log('data', data)
       if(data.status){
-        toast.success(data.message);
+        toast.success(data.message, { id: "toast" });
         handleRefresh();
       } else {
-        toast.error(data.message);
+        toast.error(data.message, { id: "toast" });
       }
     },
   });
@@ -211,7 +211,7 @@ const InfluencerOnboardForm: React.FC<InfluencerOnboardFormProps> = ({ handleRef
               </Form.Group>
 
               <Form.Group controlId="overallWatchtime" className="form-group">
-                <Form.Label>Overall Watch Time</Form.Label>
+                <Form.Label>Overall Watch Time (in hours)</Form.Label>
                 <Form.Control
                   type="text"
                   {...formik.getFieldProps("overallWatchtime")}

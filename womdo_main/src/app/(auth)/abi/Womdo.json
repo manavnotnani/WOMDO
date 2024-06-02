@@ -90,19 +90,7 @@
             {
                 "indexed": false,
                 "internalType": "string",
-                "name": "brandName",
-                "type": "string"
-            },
-            {
-                "indexed": false,
-                "internalType": "string",
                 "name": "productName",
-                "type": "string"
-            },
-            {
-                "indexed": false,
-                "internalType": "string",
-                "name": "category",
                 "type": "string"
             }
         ],
@@ -416,17 +404,7 @@
             },
             {
                 "internalType": "string",
-                "name": "_brandName",
-                "type": "string"
-            },
-            {
-                "internalType": "string",
                 "name": "_productName",
-                "type": "string"
-            },
-            {
-                "internalType": "string",
-                "name": "_category",
                 "type": "string"
             }
         ],

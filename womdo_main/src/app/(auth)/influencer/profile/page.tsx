@@ -54,7 +54,7 @@ const InfluencerProfile = () => {
         setUserData(data.data);
         setUserExists(!!data);
       } else {
-        toast.error("Influencer does not exist with this wallet address. Please create your profile.");
+        toast.error("Influencer does not exist with this wallet address. Please create your profile.", { id: "toast" });
         setUserExists(false);
       }
     } catch (error) {
