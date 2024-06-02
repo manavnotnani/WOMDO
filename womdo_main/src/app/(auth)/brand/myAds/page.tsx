@@ -1,6 +1,9 @@
 "use client";
 import { useState, useEffect } from "react";
-import { useWeb3ModalAccount, useWeb3ModalProvider } from "@web3modal/ethers5/react";
+import {
+  useWeb3ModalAccount,
+  useWeb3ModalProvider,
+} from "@web3modal/ethers5/react";
 import "./myAds.scss";
 import { API_ROUTES, API_URL, ROUTES, UsdtAddress } from "@/utils/constants";
 import toast from "react-hot-toast";
@@ -17,7 +20,7 @@ const MyAds = () => {
   const { walletProvider }: any = useWeb3ModalProvider();
   const [userData, setUserData]: any = useState({});
   const [decimals, setDecimals]: any = useState(6);
-  
+
   const router = useRouter();
 
   useEffect(() => {
@@ -37,7 +40,7 @@ const MyAds = () => {
 
       if (response.ok) {
         let data = await response.json();
-        handleGetDecimal()
+        handleGetDecimal();
         setUserData(data.data[0]);
       } else {
         toast.error(
@@ -52,14 +55,12 @@ const MyAds = () => {
   };
 
   const handleGetDecimal = async () => {
-    const ethersProvider = new ethers.providers.Web3Provider(
-        walletProvider
-    );
+    const ethersProvider = new ethers.providers.Web3Provider(walletProvider);
     const signer = ethersProvider.getSigner();
     const UsdtContract = new ethers.Contract(UsdtAddress, UsdtAbi, signer);
     const decimal = await UsdtContract.decimals();
-    setDecimals(decimal)
-  }
+    setDecimals(decimal);
+  };
 
   console.log("userData", userData);
 
@@ -71,27 +72,36 @@ const MyAds = () => {
       ) : (
         <Container>
           <Row>
-            {userData?.ads?.map((ad: any) => (
-              <Col xl={4} sm={6} key={ad._id}>
-                <div className="myAds_card">
-                  <div className="myAds_card_img"></div>
-                  <h3>{ad.productName}</h3>
-                  <div className="myAds_progress">
-                    <div className="myAds_progress_details">
-                      <h4>Budget</h4>
-                      <p>{`${ethers.utils.formatUnits(ad.budget, decimals)} USDT`}</p>
-                    </div>
-                    <div className="myAds_progress_details">
-                      <h4>Number of Ads</h4>
-                      <p>{ad.numberOfTargetedAds}</p>
-                    </div>
-                  </div>
-                  {/* <Button fluid className="custom_btn">
+            {userData
+              ? userData?.ads?.map((ad: any) => (
+                  <Col xl={4} sm={6} key={ad._id}>
+                    <div className="myAds_card">
+                      <div className="myAds_card_img"></div>
+                      <h3>{ad.productName}</h3>
+                      <div className="myAds_progress">
+                        <div className="myAds_progress_details">
+                          <h4>Budget</h4>
+                          <p>{`${ethers.utils.formatUnits(
+                            ad.budget,
+                            decimals
+                          )} USDT`}</p>
+                        </div>
+                        <div className="myAds_progress_details">
+                          <h4>Number of Ads</h4>
+                          <p>{ad.numberOfTargetedAds}</p>
+                        </div>
+                        <div className="myAds_progress_details">
+                          <h4>Ad Id</h4>
+                          <p>{ad.adId}</p>
+                        </div>
+                      </div>
+                      {/* <Button fluid className="custom_btn">
                     Check stats
                   </Button> */}
-                </div>
-              </Col>
-            ))}
+                    </div>
+                  </Col>
+                ))
+              : "No data found!"}
           </Row>
         </Container>
       )}

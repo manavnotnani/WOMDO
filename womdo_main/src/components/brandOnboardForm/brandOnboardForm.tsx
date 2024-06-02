@@ -46,7 +46,7 @@ const BrandOnboardForm: React.FC<BrandOnboardFormProps> = ({
     }),
     onSubmit: async (values) => {
       if (!isConnected) {
-        toast.error("Please connect wallet!");
+        toast.error("Please connect wallet!", { id: "toast" });
         return;
       }
       let headersList = {
@@ -66,10 +66,10 @@ const BrandOnboardForm: React.FC<BrandOnboardFormProps> = ({
       const data = await response.json();
       console.log("data", data);
       if (data.status) {
-        toast.success(data.message);
+        toast.success(data.message, { id: "toast" });
         handleRefresh();
       } else {
-        toast.error(data.message);
+        toast.error(data.message, { id: "toast" });
       }
     },
   });

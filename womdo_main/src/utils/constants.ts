@@ -13,9 +13,11 @@ export const API_URL = 'http://localhost:3000/api/';
 
 export const API_ROUTES = {
     GET_INFLUENCER: 'influencer',
+    GET_INFLUENCER_BY_CATEGORY: '/influencer/category/',
     GET_BRAND: 'brand',
-    GET_BRAND_AD: 'brand/getAd/'
+    GET_BRAND_AD: 'brand/getAd/',
+    BRAND_SEND_REQUEST: 'brand/send/request/'   
 }
 
-export const WomdoAddress = "0xB54246A0bf0dBbBE89698DfFcc094570C61758Ef";
+export const WomdoAddress = "0x4Af5E31A8d7cb92BaE8f8DB1E168CE9ad4dD51cA";
 export const UsdtAddress = "0x16a3D0bEb95D05E9c38B21Fd4Ee3672b636A102c";
