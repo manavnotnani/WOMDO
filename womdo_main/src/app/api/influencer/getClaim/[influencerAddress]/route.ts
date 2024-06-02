@@ -30,7 +30,11 @@ export async function GET(req: NextRequest, { params }: { params: any }) {
       );
     } else {
       return NextResponse.json(
-        { status: false, message: "Influencer Collab Details Not Found", data: {} },
+        {
+          status: false,
+          message: "Influencer Collab Details Not Found",
+          data: {},
+        },
         { status: 404 }
       );
     }

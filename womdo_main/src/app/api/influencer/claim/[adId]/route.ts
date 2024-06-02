@@ -13,6 +13,7 @@ export async function GET(req: NextRequest, { params }: { params: any }) {
 
     const getAd = await Ad.find({ adId: params.adId });
     const addressArray = getAd[0].acceptedUserAddress;
+    console.log('addressArray', addressArray);
     const numberOfTargetedAds = getAd[0].numberOfTargetedAds;
 
     if (addressArray.length < numberOfTargetedAds) {
@@ -90,7 +91,17 @@ export async function GET(req: NextRequest, { params }: { params: any }) {
         influencer.influencerAddress,
         compositeScoresInBIPS[index]
       );
+      console.log('addressToScoreMap', addressToScoreMap);
     });
+
+    console.log('---addressToScoreMap', addressToScoreMap);
+
+    addressToScoreMap.forEach(async (score, address) => {
+        await BrandCollab.updateOne(
+          { influencerAddress: address, adId: params.adId },
+          { $set: { compositeScore: score } }
+        );
+      });
 
     // Create the result array following the order of addressArray
     const compositeScoresOrdered = addressArray.map(
@@ -111,7 +122,7 @@ export async function GET(req: NextRequest, { params }: { params: any }) {
       );
     } else {
       return NextResponse.json(
-        { status: true, message: "Influencer Details Not Found", data: {} },
+        { status: false, message: "Influencer Details Not Found", data: {} },
         { status: 404 }
       );
     }
