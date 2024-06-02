@@ -57,54 +57,51 @@ async function main() {
   //   )
   // ).blockNumber;
 
-  usdt = await new TetherUSD__factory(owner).attach(
-    "0x16a3D0bEb95D05E9c38B21Fd4Ee3672b636A102c"
-  );
+  // usdt = await new TetherUSD__factory(owner).attach(
+  //   "0x16a3D0bEb95D05E9c38B21Fd4Ee3672b636A102c"
+  // );
 
-  const functionsRouter = "0xC22a79eBA640940ABB6dF0f7982cc119578E11De";
-  const donIdBytes32 = ethers.utils.formatBytes32String("fun-polygon-amoy-1");
+  // const functionsRouter = "0xC22a79eBA640940ABB6dF0f7982cc119578E11De";
+  // const donIdBytes32 = ethers.utils.formatBytes32String("fun-polygon-amoy-1");
 
-  womdo = await new Womdo__factory(owner).deploy(
-    functionsRouter,
-    donIdBytes32,
-    usdt.address
-  );
-  const deployedWomdo = await womdo.deployed();
+  // womdo = await new Womdo__factory(owner).deploy(
+  //   functionsRouter,
+  //   donIdBytes32,
+  //   usdt.address
+  // );
+  // const deployedWomdo = await womdo.deployed();
 
-  let womdoBlock = await (
-    await deployedWomdo.provider.getTransactionReceipt(
-      deployedWomdo.deployTransaction.hash
-    )
-  ).blockNumber;
+  // let womdoBlock = await (
+  //   await deployedWomdo.provider.getTransactionReceipt(
+  //     deployedWomdo.deployTransaction.hash
+  //   )
+  // ).blockNumber;
 
-  console.log("Womdo Address: ", womdo.address);
-  console.log("Womdo Block Number: ", womdoBlock.toString());
+  // console.log("Womdo Address: ", womdo.address);
+  // console.log("Womdo Block Number: ", womdoBlock.toString());
 
-  await verifyContracts(
-    womdo.address,
-    functionsRouter,
-    donIdBytes32,
-    usdt.address
-  );
+  // await verifyContracts(
+  //   womdo.address,
+  //   functionsRouter,
+  //   donIdBytes32,
+  //   usdt.address
+  // );
 
   // console.log("USDT Address: ", usdt.address);
   // console.log("USDT Block Number: ", usdtBlock.toString());
 
-  /*
-
-
-
   womdo = await new Womdo__factory(owner).attach(
-    "0xfc4190bc9a5cc6397199f388a1da1c244891de47"
+    "0x415ad0e6dc17ff567e40c3806555732e9c30748a"
   );
 
   let source = fs.readFileSync("./get-influencer-share.js").toString();
   let secretsLocation = Location.Inline;
   let encryptedSecretsReference = "0x";
-  let args: any = [];
+  let args: any = ["1"];
   let byteArgs: any = [];
-  let subscriptionId = 278;
+  let subscriptionId = 299;
   let callbackGasLimit = 100_000;
+
 
   const requestGasLimit = 1_750_000;
 
@@ -124,15 +121,13 @@ async function main() {
     callbackGasLimit,
     overrides
   );
-  const requestTxReceipt = await requestTx.wait(1);
+  const requestTxReceipt = await requestTx.wait(6);
 
   console.log("Request sent...");
-  await sleep(5000);
+  await sleep(10000);
 
   let result = await womdo.influencerShare(2, 0);
   console.log("result::::", result.toString());
-
-  */
 }
 
 main()

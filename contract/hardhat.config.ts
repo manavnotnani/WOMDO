@@ -11,6 +11,8 @@ const config: HardhatUserConfig = {
       chainId: 80002,
       url: "https://rpc-amoy.polygon.technology",
       accounts: [process.env.PRIVATE_KEY as string],
+      gasPrice: 20e9,
+      gas: 25e6,
     },
     ethereumSepolia: {
       chainId: 11155111,

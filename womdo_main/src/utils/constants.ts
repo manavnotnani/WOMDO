@@ -25,5 +25,5 @@ export const API_ROUTES = {
   GET_REWARD: "influencer/claim/",
 };
 
-export const WomdoAddress = "0xdd6172436c0D1478f70224F3CcC5f8FF4e99CbE2";
+export const WomdoAddress = "0x415AD0E6dc17fF567E40C3806555732E9c30748a";
 export const UsdtAddress = "0x16a3D0bEb95D05E9c38B21Fd4Ee3672b636A102c";
