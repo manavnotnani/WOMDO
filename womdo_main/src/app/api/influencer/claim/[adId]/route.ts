@@ -12,9 +12,7 @@ export async function GET(req: NextRequest, { params }: { params: any }) {
     console.log("params", typeof params.adId);
 
     const getAd = await Ad.find({ adId: params.adId });
-
     const addressArray = getAd[0].acceptedUserAddress;
-
     const numberOfTargetedAds = getAd[0].numberOfTargetedAds;
 
     if (addressArray.length < numberOfTargetedAds) {
@@ -27,8 +25,6 @@ export async function GET(req: NextRequest, { params }: { params: any }) {
       );
     }
 
-
-
     const getAllAcceptedInfluencers = await BrandCollab.find({
       adId: params.adId,
       acceptedStatus: true,
@@ -36,12 +32,80 @@ export async function GET(req: NextRequest, { params }: { params: any }) {
     });
     console.log("getAllInfluencers", getAllAcceptedInfluencers);
 
-    if (getAllAcceptedInfluencers) {
+    console.log("checkkk", getAllAcceptedInfluencers.length);
+
+    if (getAllAcceptedInfluencers.length < numberOfTargetedAds) {
+      let zerosArray1 = new Array(numberOfTargetedAds + 1).fill(0);
+      zerosArray1[numberOfTargetedAds] = Number(getAd[0].adId);
+
+      return NextResponse.json(
+        {
+          status: true,
+          data: zerosArray1,
+        },
+        { status: 200 }
+      );
+    }
+
+    // Extract ratings and subscribers
+    const ratings = getAllAcceptedInfluencers.map(
+      (influencer) => influencer.rating
+    );
+    const subscribers = getAllAcceptedInfluencers.map(
+      (influencer) => influencer.subscribers
+    );
+
+    // Calculate sum of ratings and subscribers
+    const totalRatings = ratings.reduce((acc, rating) => acc + rating, 0);
+    const totalSubscribers = subscribers.reduce(
+      (acc, subscriber) => acc + subscriber,
+      0
+    );
+
+    // Normalize ratings and subscribers
+    const normalizedRatings = ratings.map((rating) => rating / totalRatings);
+    const normalizedSubscribers = subscribers.map(
+      (subscriber) => subscriber / totalSubscribers
+    );
+
+    // Define weights
+    const w1 = 0.4;
+    const w2 = 0.6;
+
+    // Calculate composite scores
+    const compositeScores = normalizedRatings.map((nr, index) => {
+      const ns = normalizedSubscribers[index];
+      return w1 * nr + w2 * ns;
+    });
+
+    // Convert composite scores to BIPS and round to two decimal places
+    const compositeScoresInBIPS = compositeScores.map((cs) =>
+      (cs * 100).toFixed(2)
+    );
+
+    // Create a map of influencer addresses to composite scores in BIPS
+    const addressToScoreMap = new Map();
+    getAllAcceptedInfluencers.forEach((influencer, index) => {
+      addressToScoreMap.set(
+        influencer.influencerAddress,
+        compositeScoresInBIPS[index]
+      );
+    });
+
+    // Create the result array following the order of addressArray
+    const compositeScoresOrdered = addressArray.map(
+      (address:any) => Number(addressToScoreMap.get(address) * 100) || "0.00"
+    );
+    compositeScoresOrdered.push(Number(params.adId));
+    // Remove the appended adId from the response
+    // compositeScoresOrdered.push(Number(params.adId)); // Commented out to exclude adId from response
+
+    if (getAllAcceptedInfluencers.length > 0) {
       return NextResponse.json(
         {
           status: true,
           message: "Influencer Details with Ratings Fetched Successfully",
-        //   data: getAllInfluencers,
+          data: compositeScoresOrdered,
         },
         { status: 200 }
       );
