@@ -7,8 +7,8 @@ import { Toaster } from "react-hot-toast";
 
 export const metadata: Metadata = {
   title: "WOMDO",
-  description: "",
-  keywords: "",
+  description: "Enhancing Brands with AI-Driven, Decentralized Influencer Marketing Solutions.",
+  keywords: "AI, Decentralized, Marketing, Brand, Influencers",
 };
 
 export default function RootLayout({
