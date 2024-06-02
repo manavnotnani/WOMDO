@@ -3,7 +3,7 @@ import { ROUTES } from '@/utils/constants';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
-import { DashboardIcon, LockIcon, NftsIcon, SettingIcon, ShareIcon, TokenIcon, UnLockIcon, UsersIcon } from '../../../public/icons/icons';
+import { DashboardIcon, DonationsIcon, LockIcon, NftsIcon, SettingIcon, ShareIcon, TokenIcon, UnLockIcon, UsersIcon } from '../../../public/icons/icons';
 
 type TProps = {
     handleClick?: () => void,
@@ -29,6 +29,11 @@ const Sidebar = (props: TProps) => {
             route: ROUTES.INFLUENCER_SUBMIT_VIDEO,
             label: "Submit Video",
             icon: ShareIcon,
+        },
+        {
+            route: ROUTES.INFLUENCER_CLAIM,
+            label: "Claim Reward",
+            icon: DonationsIcon,
         },
     ]
     const brandNavs = [

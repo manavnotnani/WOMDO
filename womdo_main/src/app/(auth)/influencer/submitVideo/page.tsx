@@ -66,8 +66,12 @@ const SubmitVideo = () => {
     }),
     onSubmit: async (values) => {
       try {
-        const selectedProduct = invitations.find((invitation: any) => invitation.adId === values.productName)?.productName || '';
-        console.log('selectedProduct', selectedProduct)
+        setLoader(true);
+        const selectedProduct =
+          invitations.find(
+            (invitation: any) => invitation.adId === values.productName
+          )?.productName || "";
+        console.log("selectedProduct", selectedProduct);
         let bodyContent = JSON.stringify({
           videoId: values.videoId,
           lang: values.language,
@@ -76,7 +80,7 @@ const SubmitVideo = () => {
           adId: values.productName,
         });
 
-        console.log('bodyContent', bodyContent)
+        console.log("bodyContent", bodyContent);
 
         let response: any = await fetch(API_URL + API_ROUTES.AI, {
           method: "POST",
@@ -86,10 +90,15 @@ const SubmitVideo = () => {
         if (data.status) {
           toast.success(data.message, { id: "toast" });
           formik.resetForm();
+          setLoader(false);
         } else {
+          setLoader(false);
+
           toast.error(data.message, { id: "toast" });
         }
       } catch (error) {
+        setLoader(false);
+
         console.error(error);
       }
     },
