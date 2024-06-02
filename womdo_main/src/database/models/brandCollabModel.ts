@@ -14,29 +14,36 @@ const BrandCollabSchema = new Schema({
   },
   requestSentStatus: {
     type: Boolean,
-    default: true
+    default: true,
   },
   acceptedStatus: {
     type: Boolean,
-    default: false
+    default: false,
   },
   rating: {
     type: Number,
   },
   videoId: {
-    type: String
+    type: String,
   },
   brandName: {
-    type: String
-  }, 
+    type: String,
+  },
   productName: {
-    type: String
-  }, 
+    type: String,
+  },
   brandAddress: {
-    type: String
+    type: String,
   },
   subscribers: {
-    type: Number
+    type: Number,
+  },
+  score: {
+    type: String,
+  },
+  canClaim : {
+    type: Boolean,
+    default: false
   }
 });
 

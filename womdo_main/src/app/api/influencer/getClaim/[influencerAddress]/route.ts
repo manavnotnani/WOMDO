@@ -13,7 +13,7 @@ export async function GET(req: NextRequest, { params }: { params: any }) {
     console.log("walletAddressRegex", walletAddressRegex);
 
     const influencerDetails = await BrandCollab.find({
-      wallet: { $regex: walletAddressRegex },
+      influencerAddress: { $regex: walletAddressRegex },
       rating: { $exists: true },
     });
 
@@ -30,7 +30,11 @@ export async function GET(req: NextRequest, { params }: { params: any }) {
       );
     } else {
       return NextResponse.json(
-        { status: false, message: "Influencer Collab Details Not Found", data: {} },
+        {
+          status: false,
+          message: "Influencer Collab Details Not Found",
+          data: {},
+        },
         { status: 404 }
       );
     }

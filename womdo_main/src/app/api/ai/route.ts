@@ -6,6 +6,7 @@ import { translateFileToEnglish } from "@/common/translate";
 import { getContext, getContextAndCreateContent } from "@/common/extractBrand";
 import { getRating } from "@/common/claude_test_node";
 import BrandInfluencer from "@/database/models/brandCollabModel";
+import Ad from "@/database/models/adModel";
 
 function delay(ms: any) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -55,6 +56,20 @@ export async function POST(req: NextRequest) {
       { influencerAddress: reqObj.influencerAddress, adId: reqObj.adId },
       { rating: ratingNumber }
     );
+
+    const getNumberOfTargetedAds = await Ad.findOne({ adId: reqObj.adId });
+    const getListOfSubmittedVideoInfluencers = await BrandInfluencer.find({
+      adId: reqObj.adId,
+      rating: { $exists: true },
+    });
+
+    if (getListOfSubmittedVideoInfluencers.length == getNumberOfTargetedAds) {
+      const updateAllInfluencerEntry = await BrandInfluencer.updateMany(
+        { adId: reqObj.addId },
+        { $set: { canClaim: true } }
+      );
+      console.log('updateAllInfluencerEntry', updateAllInfluencerEntry);
+    }
 
     console.log("updateEntry", updateEntry);
     // const newObject = new BrandInfluencer({videoId: reqObj.videoId,rating: ratingNumber })
