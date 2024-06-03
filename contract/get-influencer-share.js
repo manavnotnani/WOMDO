@@ -6,6 +6,7 @@ const apiResponse = await Functions.makeHttpRequest({
 });
 
 let data = apiResponse.data.data;
+console.log("data::::", data);
 
 // Function to encode a uint256 value to a 32-byte Uint8Array
 function encodeUint256(value) {

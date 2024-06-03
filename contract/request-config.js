@@ -10,7 +10,7 @@ const requestConfig = {
   source: fs.readFileSync("./get-influencer-share.js").toString(),
   codeLocation: Location.Inline,
   secrets: {},
-  args: [],
+  args: ["6"],
   codeLanguage: CodeLanguage.JavaScript,
   expectedReturnType: ReturnType.bytes,
   secretsURLs: [],

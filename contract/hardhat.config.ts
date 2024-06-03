@@ -14,10 +14,19 @@ const config: HardhatUserConfig = {
       gasPrice: 20e9,
       gas: 25e6,
     },
-    ethereumSepolia: {
-      chainId: 11155111,
-      url: `https://rpc2.sepolia.org`,
+    polygonzKEVM: {
+      chainId: 2442,
+      url: "https://etherscan.cardona.zkevm-rpc.com/",
       accounts: [process.env.PRIVATE_KEY as string],
+      gasPrice: 20e9,
+      gas: 25e6,
+    },
+    scrollSepolia: {
+      chainId: 534351,
+      url: "https://scroll-sepolia.drpc.org",
+      accounts: [process.env.PRIVATE_KEY as string],
+      gasPrice: 20e9,
+      gas: 25e6,
     },
     hardhat: {
       chainId: 1337,
@@ -28,6 +37,8 @@ const config: HardhatUserConfig = {
   etherscan: {
     apiKey: {
       polygonAmoy: process.env.POLYGON_API_KEY as string,
+      polygonzKEVM: process.env.POLYGON_ZKEVM_API_KEY as string,
+      scrollSepolia: process.env.SCROLL_SEPOLIA_API_KEY as string,
     },
 
     customChains: [
@@ -37,6 +48,22 @@ const config: HardhatUserConfig = {
         urls: {
           apiURL: "https://api-amoy.polygonscan.com/api",
           browserURL: "https://amoy.polygonscan.com",
+        },
+      },
+      {
+        network: "polygonzKEVM",
+        chainId: 2442,
+        urls: {
+          apiURL: "https://api-cardona-zkevm.polygonscan.com/api",
+          browserURL: "https://zkevm.polygonscan.com/",
+        },
+      },
+      {
+        network: "scrollSepolia",
+        chainId: 534351,
+        urls: {
+          apiURL: "https://api-sepolia.scrollscan.com/api",
+          browserURL: "https://sepolia.scrollscan.com/",
         },
       },
     ],
