@@ -11,7 +11,7 @@ export const ROUTES = {
   INFLUENCER_CLAIM: "/influencer/claim",
 };
 
-export const API_URL = "http://localhost:3000/api/";
+export const API_URL = "https://womdo.vercel.app/api/";
 
 export const API_ROUTES = {
   GET_INFLUENCER: "influencer",
