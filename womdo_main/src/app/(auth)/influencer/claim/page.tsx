@@ -41,13 +41,12 @@ const Claim = () => {
   // // Define the array of uint256 values to be returned
   let id = args[0];
   
-  // const apiResponse = await Functions.makeHttpRequest({
-  //   url: "https://womdo.vercel.app/api/influencer/claim/" + id,
-  // });
+  const apiResponse = await Functions.makeHttpRequest({
+    url: "https://womdo.vercel.app/api/influencer/claim/" + id,
+  });
   
-  // let data = apiResponse.data.data;
+  let data = apiResponse.data.data;
 
-  let data = [6000, 4000, 7];
   
   // Function to encode a uint256 value to a 32-byte Uint8Array
   function encodeUint256(value) {
